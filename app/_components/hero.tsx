@@ -1,10 +1,13 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowBigRight, Star } from "lucide-react";
+import Link from "next/link";
 
 // Hero Component
 const Hero = () => {
+  const [title, setTitle] = useState("");
   return (
     <div className="py-14 md:my-4 px-4 mt-16 text-center flex flex-col bg-[url('/bg.webp')] bg-center bg-cover items-center">
       {/* Title */}
@@ -23,11 +26,14 @@ const Hero = () => {
         <Input
           type="text"
           placeholder="Enter your Logo name..."
+          onChange={(e) => setTitle(e.target.value)}
           className="h-14 md:w-5/6 text-lg! font-semibold text-gray-800 bg-white shadow-md shadow-black/10 placeholder:text-gray-400 focus:ring-blue-200!"
         />
-        <Button className="h-14 w-full md:w-fit bg-linear-to-tl from-blue-400 via-slate-600 to-blue-400 text-lg flex items-center gap-2 shadow-md shadow-black/20 transition-all duration-300 active:scale-95 cursor-pointer">
-          Create Logo <ArrowBigRight />
-        </Button>
+        <Link href={`/create?title=${title}`} className="w-full md:w-auto">
+          <Button className="h-14 w-full md:w-fit bg-linear-to-tl from-blue-400 via-slate-600 to-blue-400 text-lg flex items-center gap-2 shadow-md shadow-black/20 transition-all duration-300 active:scale-95 cursor-pointer">
+            Create Logo <ArrowBigRight />
+          </Button>
+        </Link>
       </div>
     </div>
   );
