@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { PenLine, Shapes } from "lucide-react";
+import { PenLine } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useStore } from "@/stores/store";
+import HeadingDesc from "./heading-desc";
 
 // Define props interface
 interface LogoTitleProps {
@@ -18,15 +19,12 @@ const LogoTitle = ({ onHandleInputChange }: LogoTitleProps) => {
   const [title, setTitle] = useState(searchParam?.get("title") || "");
 
   return (
-    <div className="mx-2 mt-24 p-4 md:p-6 border rounded-2xl bg-blue-100 max-w-lg shadow-lg shadow-black/10">
-      {/* Title */}
-      <h1 className="text-2xl md:text-3xl font-bold text-blue-600 flex items-center gap-1">
-        <Shapes />
-        Enter a logo name
-      </h1>
-      <p className="mt-1 text-lg font-semibold text-gray-700">
-        Enter your web app name or company name:
-      </p>
+    <div>
+      {/* Heading */}
+      <HeadingDesc
+        title="Enter a logo name"
+        desc="Enter your web app name or company name:"
+      />
       {/* Input and Button */}
       <div>
         <Input
