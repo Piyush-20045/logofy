@@ -2,6 +2,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+.custom-button {
+  @apply bg-linear-to-tl from-blue-400 via-slate-600 to-blue-400 hover:scale-105 shadow-md shadow-black/20 transition-all duration-300 active:scale-95 cursor-pointer;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -115,6 +119,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

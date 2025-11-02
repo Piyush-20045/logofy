@@ -54,7 +54,7 @@ const Create = () => {
               Go Back
             </Button>
             <Button
-              className="bg-linear-to-tl from-blue-400 via-slate-600 to-blue-400 hover:scale-105 shadow-md shadow-black/20 transition-all duration-300 active:scale-95 cursor-pointer"
+              className="custom-button"
               onClick={() => incStep(1)}
             >
               Continue

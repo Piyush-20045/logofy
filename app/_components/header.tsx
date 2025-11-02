@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { LogIn } from "lucide-react";
 
 // Header Component
 const header = () => {
@@ -15,11 +16,10 @@ const header = () => {
       </div>
 
       {/* NAV LINKS */}
-      <div className="flex gap-6">
-        <Button className="bg-blue-600 text-lg hover:bg-blue-700 cursor-pointer">
-          login
-        </Button>
-      </div>
+      <Button className="custom-button text-lg">
+        <LogIn />
+        login
+      </Button>
     </div>
   );
 };

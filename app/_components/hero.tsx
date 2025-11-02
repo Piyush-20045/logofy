@@ -30,7 +30,7 @@ const Hero = () => {
           className="h-14 md:w-5/6 text-lg! font-semibold text-gray-800 bg-white shadow-md shadow-black/10 placeholder:text-gray-400 focus:ring-blue-200!"
         />
         <Link href={`/create?title=${title}`} className="w-full md:w-auto">
-          <Button className="h-14 w-full md:w-fit bg-linear-to-tl from-blue-400 via-slate-600 to-blue-400 text-lg flex items-center gap-2 shadow-md shadow-black/20 transition-all duration-300 active:scale-95 cursor-pointer">
+          <Button className="h-14 w-full md:w-fit text-lg flex items-center gap-2 custom-button">
             Create Logo <ArrowBigRight />
           </Button>
         </Link>

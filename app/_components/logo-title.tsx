@@ -39,7 +39,7 @@ const LogoTitle = ({ onHandleInputChange }: LogoTitleProps) => {
         />
         <Button
           onClick={() => incStep(1)}
-          className="h-12 mt-4 w-full bg-linear-to-tl from-blue-400 via-slate-600 to-blue-400 text-lg shadow-md shadow-black/20 transition-all duration-300 active:scale-95 cursor-pointer"
+          className="h-12 mt-4 w-full text-lg custom-button"
         >
           Create Logo <PenLine />
         </Button>
