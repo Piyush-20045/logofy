@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import LogoTitle from "../_components/logo-title";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import LogoDesc from "../_components/logo-desc";
 import LogoPalette from "../_components/logo-palette";
 import LogoDesigns from "../_components/logo-designs";
 import LogoIdeas from "../_components/logo-ideas";
+import { log } from "console";
 
 // Create page component
 const Create = () => {
@@ -26,7 +27,7 @@ const Create = () => {
 
   return (
     <div className="bg-[url('/bg.webp')] bg-center bg-cover flex flex-col items-center">
-      <div className="mx-2 mt-24 p-4 md:p-6 border rounded-2xl bg-blue-100 max-w-lg shadow-lg shadow-black/10">
+      <div className="mx-2 my-20 p-4 md:p-6 border border-black/10 rounded-2xl bg-blue-100 md:min-w-xl shadow-lg shadow-black/10">
         {step === 1 ? (
           <LogoTitle
             onHandleInputChange={(v) => onHandleInputChange("title", v)}
@@ -36,7 +37,9 @@ const Create = () => {
             onHandleInputChange={(v) => onHandleInputChange("desc", v)}
           />
         ) : step === 3 ? (
-          <LogoPalette />
+          <LogoPalette
+            onHandleInputChange={(v) => onHandleInputChange("palette", v)}
+          />
         ) : step === 4 ? (
           <LogoDesigns />
         ) : step === 5 ? (
@@ -53,10 +56,7 @@ const Create = () => {
               <ArrowLeft />
               Go Back
             </Button>
-            <Button
-              className="custom-button"
-              onClick={() => incStep(1)}
-            >
+            <Button className="custom-button" onClick={() => incStep(1)}>
               Continue
               <ArrowRight />
             </Button>
