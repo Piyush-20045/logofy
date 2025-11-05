@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
-import LogoTitle from "../_components/logo-title";
+import LogoTitle from "./steps/logo-title";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/stores/store";
-import LogoDesc from "../_components/logo-desc";
-import LogoPalette from "../_components/logo-palette";
-import LogoDesigns from "../_components/logo-designs";
-import LogoIdeas from "../_components/logo-ideas";
+import LogoDesc from "./steps/logo-desc";
+import LogoPalette from "./steps/logo-palette";
+import LogoDesigns from "./steps/logo-designs";
+import LogoIdeas from "./steps/logo-ideas";
 import { log } from "console";
 
 // Create page component

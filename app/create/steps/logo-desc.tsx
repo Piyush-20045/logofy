@@ -1,6 +1,6 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import HeadingDesc from "./heading-desc";
+import HeadingDesc from "../../_components/heading-desc";
 
 // Define props interface
 interface LogoTitleProps {

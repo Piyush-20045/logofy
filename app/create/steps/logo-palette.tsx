@@ -1,5 +1,5 @@
-import HeadingDesc from "./heading-desc";
-import colors from "../_data/colors";
+import HeadingDesc from "../../_components/heading-desc";
+import colors from "../../_data/colors";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 
