@@ -17,7 +17,7 @@ const Create = () => {
   const incStep = useStore((state) => state.incStep);
   const [formData, setFormData] = useState({});
 
-  const onHandleInputChange = (field: string, value: string) => {
+  const onHandleInputChange = (field: string, value: string | object) => {
     // Handle input change logic here
     setFormData((prev) => ({
       ...prev,
@@ -27,7 +27,7 @@ const Create = () => {
 
   return (
     <div className="bg-[url('/bg.webp')] bg-center bg-cover flex flex-col items-center">
-      <div className="mx-2 my-20 p-4 md:p-6 border border-black/10 rounded-2xl bg-blue-100 md:min-w-xl shadow-lg shadow-black/10">
+      <div className="mx-2 md:mx-28 my-20 p-4 md:p-6 border border-black/10 rounded-2xl bg-blue-100 md:min-w-xl shadow-lg shadow-black/10">
         {step === 1 ? (
           <LogoTitle
             onHandleInputChange={(v) => onHandleInputChange("title", v)}
@@ -41,7 +41,9 @@ const Create = () => {
             onHandleInputChange={(v) => onHandleInputChange("palette", v)}
           />
         ) : step === 4 ? (
-          <LogoDesigns />
+          <LogoDesigns
+            onHandleInputChange={(v) => onHandleInputChange("design", v)}
+          />
         ) : step === 5 ? (
           <LogoIdeas />
         ) : null}
