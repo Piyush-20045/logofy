@@ -8,14 +8,24 @@ import LogoDesc from "./steps/logo-desc";
 import LogoPalette from "./steps/logo-palette";
 import LogoDesigns from "./steps/logo-designs";
 import LogoIdeas from "./steps/logo-ideas";
-import { log } from "console";
+
+interface FormData {
+  title?: string;
+  desc?: string;
+  palette?: string;
+  design?: {
+    image: string;
+    prompt: string;
+    title: string;
+  };
+}
 
 // Create page component
 const Create = () => {
   const step = useStore((state) => state.step);
   const decStep = useStore((state) => state.decStep);
   const incStep = useStore((state) => state.incStep);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState<FormData>({});
 
   const onHandleInputChange = (field: string, value: string | object) => {
     // Handle input change logic here
@@ -23,6 +33,7 @@ const Create = () => {
       ...prev,
       [field]: value,
     }));
+    console.log(formData);
   };
 
   return (
@@ -58,7 +69,17 @@ const Create = () => {
               <ArrowLeft />
               Go Back
             </Button>
-            <Button className="custom-button" onClick={() => incStep(1)}>
+            <Button
+              className="custom-button"
+              onClick={() => incStep(1)}
+              disabled={
+                (formData["title"] === undefined && step === 1) ||
+                (formData["desc"] === undefined && step === 2) ||
+                (formData["palette"] === undefined && step === 3) ||
+                (formData["design"] === undefined && step === 4) ||
+                step === 5
+              }
+            >
               Continue
               <ArrowRight />
             </Button>

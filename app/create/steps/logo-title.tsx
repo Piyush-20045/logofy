@@ -40,6 +40,7 @@ const LogoTitle = ({ onHandleInputChange }: LogoTitleProps) => {
         <Button
           onClick={() => incStep(1)}
           className="h-12 mt-4 w-full text-lg custom-button"
+          disabled={title === ""}
         >
           Create Logo <PenLine />
         </Button>
