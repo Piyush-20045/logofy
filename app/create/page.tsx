@@ -8,6 +8,7 @@ import LogoDesc from "./steps/logo-desc";
 import LogoPalette from "./steps/logo-palette";
 import LogoDesigns from "./steps/logo-designs";
 import LogoIdeas from "./steps/logo-ideas";
+import Pricing from "./steps/pricing";
 
 interface FormData {
   title?: string;
@@ -57,6 +58,8 @@ const Create = () => {
           />
         ) : step === 5 ? (
           <LogoIdeas />
+        ) : step === 6 ? (
+          <Pricing />
         ) : null}
 
         {step === 1 ? null : (
@@ -77,7 +80,7 @@ const Create = () => {
                 (formData["desc"] === undefined && step === 2) ||
                 (formData["palette"] === undefined && step === 3) ||
                 (formData["design"] === undefined && step === 4) ||
-                step === 5
+                step === 6
               }
             >
               Continue
