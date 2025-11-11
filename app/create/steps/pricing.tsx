@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
-import { BadgeCheck, Check, CircleDollarSign, DollarSign } from "lucide-react";
+import { BadgeCheck, Check } from "lucide-react";
 import { plans } from "@/app/_data/pricing";
 import { useState } from "react";
 

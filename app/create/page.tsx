@@ -7,7 +7,6 @@ import { useStore } from "@/stores/store";
 import LogoDesc from "./steps/logo-desc";
 import LogoPalette from "./steps/logo-palette";
 import LogoDesigns from "./steps/logo-designs";
-import LogoIdeas from "./steps/logo-ideas";
 import Pricing from "./steps/pricing";
 
 interface FormData {
@@ -57,8 +56,6 @@ const Create = () => {
             onHandleInputChange={(v) => onHandleInputChange("design", v)}
           />
         ) : step === 5 ? (
-          <LogoIdeas />
-        ) : step === 6 ? (
           <Pricing />
         ) : null}
 
@@ -80,7 +77,7 @@ const Create = () => {
                 (formData["desc"] === undefined && step === 2) ||
                 (formData["palette"] === undefined && step === 3) ||
                 (formData["design"] === undefined && step === 4) ||
-                step === 6
+                step === 5
               }
             >
               Continue
