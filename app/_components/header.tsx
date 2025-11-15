@@ -8,7 +8,6 @@ import { UserButton, useUser } from "@clerk/nextjs";
 // Header Component
 const header = () => {
   const { isLoaded, isSignedIn, user } = useUser();
-  console.log(isLoaded, isSignedIn, user);
 
   return (
     <div className="px-3 md:px-20 2xl:px-56 py-2 flex justify-between items-center shadow-sm">
