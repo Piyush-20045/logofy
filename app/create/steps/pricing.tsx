@@ -1,11 +1,20 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { BadgeCheck, Check } from "lucide-react";
 import { plans } from "@/app/_data/pricing";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { CreateFormData } from "../page";
 
-const Pricing = () => {
+const Pricing = ({ formData }: { formData: CreateFormData }) => {
   const [selectedPlan, setSelectedPlan] = useState("Premium");
+
+  useEffect(() => {
+    if (formData.title && typeof window !== "undefined") {
+      localStorage.setItem("FormData", JSON.stringify(formData));
+    }
+  }, [formData]);
+
   return (
     <div className="md:px-8">
       {/* Heading */}

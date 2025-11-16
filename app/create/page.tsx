@@ -9,7 +9,7 @@ import LogoPalette from "./steps/logo-palette";
 import LogoDesigns from "./steps/logo-designs";
 import Pricing from "./steps/pricing";
 
-interface FormData {
+export interface CreateFormData {
   title?: string;
   desc?: string;
   palette?: string;
@@ -25,7 +25,7 @@ const Create = () => {
   const step = useStore((state) => state.step);
   const decStep = useStore((state) => state.decStep);
   const incStep = useStore((state) => state.incStep);
-  const [formData, setFormData] = useState<FormData>({});
+  const [formData, setFormData] = useState<CreateFormData>({});
 
   const onHandleInputChange = (field: string, value: string | object) => {
     // Handle input change logic here
@@ -56,7 +56,7 @@ const Create = () => {
             onHandleInputChange={(v) => onHandleInputChange("design", v)}
           />
         ) : step === 5 ? (
-          <Pricing />
+          <Pricing formData={formData} />
         ) : null}
 
         {step === 1 ? null : (
