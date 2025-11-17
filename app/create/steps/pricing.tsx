@@ -4,7 +4,7 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { BadgeCheck, Check } from "lucide-react";
 import { plans } from "@/app/_data/pricing";
 import { useEffect, useState } from "react";
-import { CreateFormData } from "../page";
+import { CreateFormData } from "@/stores/store";
 
 const Pricing = ({ formData }: { formData: CreateFormData }) => {
   const [selectedPlan, setSelectedPlan] = useState("Premium");

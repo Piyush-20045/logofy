@@ -1,15 +1,23 @@
 import { Card } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import Designs from "@/app/_data/designs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import HeadingDesc from "@/app/_components/heading-desc";
+import { useStore } from "@/stores/store";
 
 interface StyleSelectorProps {
   onHandleInputChange: (value: object) => void;
 }
 
 const LogoDesigns = ({ onHandleInputChange }: StyleSelectorProps) => {
-  const [selectedDesign, setSelectedDesign] = useState("");
+  const storedDesign = useStore((s) => s.formData.design);
+  const [selectedDesign, setSelectedDesign] = useState(
+    storedDesign?.title ?? ""
+  );
+
+  useEffect(() => {
+    if (storedDesign?.title) setSelectedDesign(storedDesign.title);
+  }, [storedDesign]);
 
   return (
     <div>

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PenLine } from "lucide-react";
@@ -14,9 +14,17 @@ interface LogoTitleProps {
 
 // LogoTitle component
 const LogoTitle = ({ onHandleInputChange }: LogoTitleProps) => {
-  const incStep = useStore((state) => state.incStep);
   const searchParam = useSearchParams();
-  const [title, setTitle] = useState(searchParam?.get("title") || "");
+  const incStep = useStore((state) => state.incStep);
+
+  const storedTitle = useStore((s) => s.formData.title);
+  const [title, setTitle] = useState(
+    storedTitle ?? searchParam?.get("title") ?? ""
+  );
+
+  useEffect(() => {
+    if (storedTitle) setTitle(storedTitle);
+  }, [storedTitle]);
 
   return (
     <div>
@@ -30,7 +38,7 @@ const LogoTitle = ({ onHandleInputChange }: LogoTitleProps) => {
         <Input
           type="text"
           placeholder="Enter a logo name"
-          defaultValue={title}
+          value={title}
           onChange={(e) => {
             setTitle(e.target.value);
             onHandleInputChange(e.target.value);

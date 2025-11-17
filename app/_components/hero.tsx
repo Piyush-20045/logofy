@@ -1,13 +1,29 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowBigRight, Star } from "lucide-react";
 import Link from "next/link";
+import { useStore } from "@/stores/store";
 
 // Hero Component
 const Hero = () => {
-  const [title, setTitle] = useState("");
+  const setFormData = useStore((s) => s.setFormData);
+  const storedTitle = useStore((s) => s.formData.title);
+  const [title, setTitle] = useState(storedTitle ?? "");
+
+  useEffect(() => {
+    if (storedTitle) {
+      setTitle(storedTitle);
+    }
+  }, [storedTitle]);
+
+  // Handle Change function
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+    setFormData("title", e.target.value);
+  };
+
   return (
     <div className="py-14 md:my-4 px-4 mt-16 text-center flex flex-col bg-[url('/bg.webp')] bg-center bg-cover items-center">
       {/* Title */}
@@ -26,7 +42,8 @@ const Hero = () => {
         <Input
           type="text"
           placeholder="Enter your Logo name..."
-          onChange={(e) => setTitle(e.target.value)}
+          value={title}
+          onChange={handleChange}
           className="h-14 md:w-5/6 text-lg! font-semibold text-gray-800 bg-white shadow-md shadow-black/10 placeholder:text-gray-400 focus:ring-blue-200!"
         />
         <Link href={`/create?title=${title}`} className="w-full md:w-auto">

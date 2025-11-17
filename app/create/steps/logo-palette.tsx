@@ -1,7 +1,8 @@
 import HeadingDesc from "../../_components/heading-desc";
 import colors from "../../_data/colors";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useStore } from "@/stores/store";
 
 // Define props interface
 interface LogoTitleProps {
@@ -9,7 +10,12 @@ interface LogoTitleProps {
 }
 
 const LogoPalette = ({ onHandleInputChange }: LogoTitleProps) => {
-  const [selectedPalette, setSelectedPalette] = useState("");
+  const storedPalette = useStore((s) => s.formData.palette);
+  const [selectedPalette, setSelectedPalette] = useState(storedPalette ?? "");
+
+  useEffect(() => {
+    if (storedPalette) setSelectedPalette(storedPalette);
+  }, [storedPalette]);
   return (
     <div>
       {/* Heading */}

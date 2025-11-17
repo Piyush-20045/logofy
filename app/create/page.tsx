@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import LogoTitle from "./steps/logo-title";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,31 +8,16 @@ import LogoPalette from "./steps/logo-palette";
 import LogoDesigns from "./steps/logo-designs";
 import Pricing from "./steps/pricing";
 
-export interface CreateFormData {
-  title?: string;
-  desc?: string;
-  palette?: string;
-  design?: {
-    image: string;
-    prompt: string;
-    title: string;
-  };
-}
-
 // Create page component
 const Create = () => {
   const step = useStore((state) => state.step);
   const decStep = useStore((state) => state.decStep);
   const incStep = useStore((state) => state.incStep);
-  const [formData, setFormData] = useState<CreateFormData>({});
+  const formData = useStore((state) => state.formData);
+  const setFormData = useStore((state) => state.setFormData);
 
   const onHandleInputChange = (field: string, value: string | object) => {
-    // Handle input change logic here
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-    console.log(formData);
+    setFormData(field, value);
   };
 
   return (
