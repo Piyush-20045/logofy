@@ -2,10 +2,11 @@
 import PROPMT from "@/app/_data/Prompt";
 import { useStore } from "@/stores/store";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const GenerateAILogo = () => {
   const formData = useStore((s) => s.formData);
+  const [logoImage, setLogoImage] = useState("");
 
   useEffect(() => {
     generateLogo();
@@ -26,11 +27,17 @@ const GenerateAILogo = () => {
       const response = await axios.post("/api/ai-logo-model", {
         prompt: prompt,
       });
-      console.log(response?.data.prompt);
+      console.log(response?.data.logoImage);
+      setLogoImage(response?.data.logoImage);
     } catch (error) {
       console.error("Error generating logo:", error);
     }
-    return <div>GenerateAILogo</div>;
+    return (
+      <div>
+        <h2>This is the logo - </h2>
+        <img src={logoImage} alt="logooo" />
+      </div>
+    );
   };
 };
 
