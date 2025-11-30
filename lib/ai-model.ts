@@ -28,18 +28,17 @@ export const aiImage = async (prompt: string) => {
   const encodedPrompt = encodeURIComponent(prompt);
   const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true&model=flux`;
 
-  // Download the image
+  // Fetch image from Pollinations
   const response = await axios.get(imageUrl, {
     responseType: "arraybuffer",
     timeout: 60000,
   });
 
-  // Convert binary data to base64
+  // Convert binary data to base64(encoded string)
   const buffer = Buffer.from(response.data, "binary");
   const base64Image = buffer.toString("base64");
 
-  const base64ImageWithMeme = `data:image/png;base64,${base64Image}`;
+  const base64ImageWithMime = `data:image/jpeg;base64,${base64Image}`;
 
-  // save image to supabase storage
-  return base64ImageWithMeme;
+  return base64ImageWithMime;
 };

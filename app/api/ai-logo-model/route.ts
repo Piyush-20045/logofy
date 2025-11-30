@@ -11,8 +11,7 @@ export async function POST(req: Request) {
 
     // Generate AI LOGO using Image Model
     const logoImage = await aiImage(improvedPrompt.prompt);
-    console.log("logoImage -- ", logoImage);
-    return NextResponse.json({ logoImage });
+    return NextResponse.json({ image: logoImage });
   } catch (e) {
     console.error("Error generating AI logo prompt:", e);
     return NextResponse.json(
