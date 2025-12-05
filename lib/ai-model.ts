@@ -14,7 +14,6 @@ export async function aiPrompt(prompt: string) {
   // trying to parse as JSON; if parse succeeds, return the parsed object, else return the raw string
   try {
     const parsed = JSON.parse(text ?? "");
-    console.log("parsed --", parsed);
     return parsed;
   } catch {
     // not JSON — return raw text

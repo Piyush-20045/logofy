@@ -9,12 +9,13 @@ export async function POST() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    const id = user.id;
     const name = user.fullName || "Unknown";
     const email = user.primaryEmailAddress?.emailAddress;
 
     const { data, error } = await supabaseAdmin
       .from("users")
-      .upsert([{ name, email, credits: 5 }], { onConflict: "email" });
+      .upsert([{ id, name, email, credits: 5 }], { onConflict: "email" });
 
     if (error) throw error;
 
