@@ -3,10 +3,13 @@ import PROPMT from "@/app/_data/Prompt";
 import { useStore } from "@/stores/store";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
+import { redirect } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 
 const GenerateAILogo = () => {
   const formData = useStore((s) => s.formData);
+  const clearFormData = useStore((s) => s.clearFormData);
+
   const [logoImage, setLogoImage] = useState("");
   const [isLoading, setLoading] = useState(false);
   const { user, isLoaded } = useUser();
@@ -15,39 +18,28 @@ const GenerateAILogo = () => {
   const calledOnce = useRef(false);
 
   useEffect(() => {
-    // GUARD 1: If we already called the API, stop.
-    if (calledOnce.current) return;
+    if (!formData?.title) redirect("/create");
 
-    // GUARD 2: If Clerk is still loading the user data, stop and wait.
-    if (!isLoaded) return;
+    // Stop If loading, already called the API
+    if (!isLoaded || calledOnce.current) return;
 
-    // GUARD 3: If formData is empty (user refreshed page?), stop.
-    if (!formData?.title) return;
-
-    // --- START GENERATION ---
-    calledOnce.current = true; // Lock the door immediately so it doesn't run again
+    // Lock the door immediately so it doesn't run again
+    calledOnce.current = true;
     setLoading(true);
 
     const generateLogo = async () => {
-      const prompt = PROPMT.LOGO_PROMPT.replace(
-        `{logoTitle}`,
-        formData?.title ?? ""
-      )
-        .replace(`{logoDesc}`, formData?.desc ?? "")
-        .replace(`{logoColor}`, formData?.palette ?? "")
-        .replace(`{logoDesign}`, formData?.design?.title ?? "")
-        .replace(`{logoPrompt}`, formData?.design?.prompt ?? "");
-
+      const prompt = constructPrompt(formData);
       try {
         const response = await axios.post("/api/ai-logo-model", {
           prompt: prompt,
-          user_id: user?.id, // Now we are sure this exists
+          user_id: user?.id,
           title: formData?.title,
           desc: formData?.desc,
         });
 
         console.log("Success:", response?.data.image);
         setLogoImage(response?.data.image);
+        clearFormData(); //clearing the form so if user reloads he will be redirected to other page instead of another request for logo
       } catch (error) {
         console.error("Error generating logo:", error);
       } finally {
@@ -60,7 +52,7 @@ const GenerateAILogo = () => {
 
   return (
     <div className="min-h-screen flex justify-center items-center flex-col">
-      {/* Show loading if explicitly loading OR if we are waiting for Clerk */}
+      {/* Show loading if loading OR if we are waiting for Clerk */}
       {(isLoading || !isLoaded) && <p>Generating your logo...</p>}
 
       {!isLoading && logoImage && (
@@ -79,3 +71,14 @@ const GenerateAILogo = () => {
 };
 
 export default GenerateAILogo;
+
+// constructing prompt for sending it to gemini
+const constructPrompt = (formData: any) => {
+  if (!formData) return "";
+
+  return PROPMT.LOGO_PROMPT.replace(`{logoTitle}`, formData?.title ?? "")
+    .replace(`{logoDesc}`, formData?.desc ?? "")
+    .replace(`{logoColor}`, formData?.palette ?? "")
+    .replace(`{logoDesign}`, formData?.design?.title ?? "")
+    .replace(`{logoPrompt}`, formData?.design?.prompt ?? "");
+};
