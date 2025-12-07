@@ -4,15 +4,15 @@ export default [
     colors: ["#ff5733", "#33ff57", "#3357ff", "#ff33a8", "#f4ff33"],
   },
   {
-    name: "Ocean Blues",
-    colors: ["#003f5c", "#2f4b7c", "#665191", "#a05195", "#d45087"],
+    name: "Trustworthy Blue",
+    colors: ["#2563eb", "#3b82f6", "#60a5fa", "#93c5fd", "#bfdbfe"],
   },
   {
     name: "Sunset Warmth",
     colors: ["#ff6f61", "#ff8566", "#ff9f6b", "#ffb774", "#ffd382"],
   },
   {
-    name: "Forest Greens",
+    name: "Forest Green",
     colors: ["#2a6f4e", "#3e8e68", "#56a581", "#70bd9b", "#8fd6b5"],
   },
   {
@@ -20,7 +20,7 @@ export default [
     colors: ["#5d4037", "#795548", "#8d6e63", "#a1887f", "#d7ccc8"],
   },
   {
-    name: "Soft Purples",
+    name: "Deep Purple",
     colors: ["#6a1b9a", "#7b1fa2", "#8e24aa", "#9c27b0", "#ab47bc"],
   },
 ];
