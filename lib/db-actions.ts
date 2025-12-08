@@ -37,7 +37,7 @@ export async function saveLogoToDb({ user_id, title, desc, image }: any) {
     // 5. SAVING METADATA in the logos table of supabase
     const { data, error } = await supabaseAdmin
       .from("logos")
-      .upsert({ user_id, title, desc, image_url });
+      .insert({ user_id, title, desc, image_url });
     if (error) throw Error;
 
     return NextResponse.json({
