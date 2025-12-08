@@ -18,10 +18,10 @@ const GenerateAILogo = () => {
   const calledOnce = useRef(false);
 
   useEffect(() => {
-    if (!formData?.title) redirect("/create");
-
     // Stop If loading, already called the API
     if (!isLoaded || calledOnce.current) return;
+
+    if (!formData.title || !formData.desc) redirect("/create");
 
     // Lock the door immediately so it doesn't run again
     calledOnce.current = true;
@@ -39,7 +39,9 @@ const GenerateAILogo = () => {
 
         console.log("Success:", response?.data.image);
         setLogoImage(response?.data.image);
-        clearFormData(); //clearing the form so if user reloads he will be redirected to other page instead of another request for logo
+        console.log(logoImage);
+
+        clearFormData(); //clearing the form
       } catch (error) {
         console.error("Error generating logo:", error);
       } finally {
