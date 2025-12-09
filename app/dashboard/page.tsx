@@ -4,6 +4,9 @@ import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
+import toast from "react-hot-toast";
+import { Button } from "@/components/ui/button";
+import { Download, Trash } from "lucide-react";
 
 interface Logo {
   id: number;
@@ -81,6 +84,30 @@ const Dashboard = () => {
     }
   };
 
+  // DELETE LOGO FUNCTION
+  const handleDelete = async (logoId: Number, imageUrl: string) => {
+    if (
+      !confirm(
+        "Are you sure you want to delete this logo? This cannot be undone."
+      )
+    )
+      return;
+
+    // Removing it from the screen immediately
+    setLogos((prev) => prev.filter((logo) => logo.id !== logoId));
+
+    try {
+      await axios.post("/api/delete-logo", {
+        id: logoId,
+        image_url: imageUrl,
+      });
+      toast.success("Logo deleted successfully");
+    } catch (err) {
+      console.error("Error in deleting", err);
+      toast.error("Failed to delete logo. Please refresh the page.");
+    }
+  };
+
   if (!isLoaded)
     return <div className="p-10 text-center">Loading user data...</div>;
 
@@ -146,15 +173,26 @@ const Dashboard = () => {
                 {logo.desc || "No description"}
               </p>
 
-              {/* Download Button (Optional Bonus) */}
-              <button
+              {/* Download Button */}
+              <Button
                 onClick={() =>
                   downloadImage(logo.image_url, logo.title || "logo")
                 }
-                className="mt-auto text-sm text-center text-blue-600 border border-blue-200 py-2 rounded-md hover:bg-blue-50 transition cursor-pointer"
+                variant="outline"
+                className="text-blue-600 border border-blue-200 hover:bg-blue-50 hover:text-blue-700 transition cursor-pointer"
               >
+                <Download />
                 Download
-              </button>
+              </Button>
+              {/* DELETE BUTTON */}
+              <Button
+                onClick={() => handleDelete(logo.id, logo.image_url)}
+                variant="destructive"
+                className="mt-2 hover:bg-red-700 transition cursor-pointer"
+              >
+                <Trash />
+                Delete
+              </Button>
             </div>
           ))}
         </div>
