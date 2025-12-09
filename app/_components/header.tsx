@@ -22,9 +22,11 @@ const header = () => {
       {/* NAV LINKS */}
       {!isLoaded ? null : isSignedIn ? (
         <div className="flex items-center gap-2 md:gap-6">
-          <Button variant="outline" className="cursor-pointer">
-            Dashboard
-          </Button>
+          <Link href="/dashboard">
+            <Button variant="outline" className="cursor-pointer">
+              Dashboard
+            </Button>
+          </Link>
           <UserButton />
         </div>
       ) : (
