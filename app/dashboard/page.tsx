@@ -3,10 +3,9 @@ import { supabase } from "@/lib/supabaseClient";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import axios from "axios";
-import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { Download, Trash } from "lucide-react";
+import { deleteLogo, downloadLogo } from "@/lib/utils/logo-utils";
 
 interface Logo {
   id: number;
@@ -50,42 +49,8 @@ const Dashboard = () => {
     fetchLogos();
   }, [user, isLoaded]);
 
-  // DOWNLOAD-IMAGE HELPER FUNCTION which fetches the image and converts it into "blob"(binary object) and saves it
-  const downloadImage = async (imageUrl: string, fileName: string) => {
-    try {
-      // 1.Fetch the image data
-      const response = await fetch(imageUrl, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      // 2.Convert it into Blob(Binary Large Object)
-      const blob = await response.blob();
-
-      // 3. Create a temporary link element
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-
-      // 4. Forcing the browser to download
-      link.download = fileName.endsWith(".png") ? fileName : `${fileName}.png`;
-
-      document.body.appendChild(link);
-      link.click();
-
-      // 5. Cleanup
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error("Error downloading image:", err);
-      // fallback if error
-      window.open(imageUrl, "_blank");
-    }
-  };
-
-  // DELETE LOGO FUNCTION
-  const handleDelete = async (logoId: Number, imageUrl: string) => {
+  // DELETE handler
+  const handleDelete = async (logoId: number, imageUrl: string) => {
     if (
       !confirm(
         "Are you sure you want to delete this logo? This cannot be undone."
@@ -96,24 +61,15 @@ const Dashboard = () => {
     // Removing it from the screen immediately
     setLogos((prev) => prev.filter((logo) => logo.id !== logoId));
 
-    try {
-      await axios.post("/api/delete-logo", {
-        id: logoId,
-        image_url: imageUrl,
-      });
-      toast.success("Logo deleted successfully");
-    } catch (err) {
-      console.error("Error in deleting", err);
-      toast.error("Failed to delete logo. Please refresh the page.");
-    }
+    await deleteLogo(logoId, imageUrl);
   };
 
   if (!isLoaded)
     return <div className="p-10 text-center">Loading user data...</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen p-8">
+      <div className="max-w-6xl mx-auto md:mx-24">
         {/* Header Section */}
         <div className="flex justify-between items-center mb-8">
           <div className="">
@@ -124,7 +80,7 @@ const Dashboard = () => {
             </p>
           </div>
           <Link
-            href="/generate-logo"
+            href="/create"
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
           >
             + Create New
@@ -166,33 +122,35 @@ const Dashboard = () => {
               </div>
 
               {/* Text Info */}
-              <h3 className="font-semibold text-gray-800 truncate">
+              <h3 className="text-lg font-semibold text-gray-800 truncate">
                 {logo.title || "Untitled"}
               </h3>
-              <p className="text-xs text-gray-500 line-clamp-2 mt-1 mb-3">
+              <p className="h-14 text-md text-gray-500 line-clamp-2 mt-1 mb-3">
                 {logo.desc || "No description"}
               </p>
 
-              {/* Download Button */}
-              <Button
-                onClick={() =>
-                  downloadImage(logo.image_url, logo.title || "logo")
-                }
-                variant="outline"
-                className="text-blue-600 border border-blue-200 hover:bg-blue-50 hover:text-blue-700 transition cursor-pointer"
-              >
-                <Download />
-                Download
-              </Button>
-              {/* DELETE BUTTON */}
-              <Button
-                onClick={() => handleDelete(logo.id, logo.image_url)}
-                variant="destructive"
-                className="mt-2 hover:bg-red-700 transition cursor-pointer"
-              >
-                <Trash />
-                Delete
-              </Button>
+              <div className="flex justify-between items-center">
+                {/* Download Button */}
+                <Button
+                  onClick={() =>
+                    downloadLogo(logo.image_url, logo.title || "logo")
+                  }
+                  variant="outline"
+                  className="text-blue-600 border border-blue-200 hover:bg-blue-50 hover:text-blue-700 transition cursor-pointer"
+                >
+                  <Download />
+                  Download
+                </Button>
+                {/* DELETE BUTTON */}
+                <Button
+                  onClick={() => handleDelete(logo.id, logo.image_url)}
+                  variant="destructive"
+                  className="hover:bg-red-700 transition cursor-pointer"
+                >
+                  <Trash />
+                  Delete
+                </Button>
+              </div>
             </div>
           ))}
         </div>
