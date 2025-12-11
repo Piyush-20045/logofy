@@ -5,19 +5,24 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 // Generate AI Text Prompt for Logo
 export async function aiPrompt(prompt: string) {
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt,
-  });
-  const text = response.text;
-
-  // trying to parse as JSON; if parse succeeds, return the parsed object, else return the raw string
   try {
-    const parsed = JSON.parse(text ?? "");
-    return parsed;
-  } catch {
-    // not JSON — return raw text
-    return text;
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+    });
+    const text = response.text;
+
+    // trying to parse as JSON; if parse succeeds, return the parsed object, else return the raw string
+    try {
+      // Clean up the text in case it has markdown code blocks (e.g. ```json ... ```)
+      const cleanedText = text?.replace(/```json|```/g, "").trim();
+      return JSON.parse(cleanedText!);
+    } catch {
+      return text;
+    }
+  } catch (error) {
+    console.error("Error generating AI prompt:", error);
+    throw error;
   }
 }
 
