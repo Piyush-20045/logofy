@@ -3,7 +3,7 @@ import { Check } from "lucide-react";
 import Designs from "@/app/_data/designs";
 import { useState, useEffect } from "react";
 import HeadingDesc from "@/app/_components/heading-desc";
-import { useStore } from "@/stores/store";
+import { useStore } from "@/stores/steps-store";
 
 interface StyleSelectorProps {
   onHandleInputChange: (value: object) => void;

@@ -2,7 +2,7 @@
 import LogoTitle from "./steps/logo-title";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useStore } from "@/stores/store";
+import { useStore } from "@/stores/steps-store";
 import LogoDesc from "./steps/logo-desc";
 import LogoPalette from "./steps/logo-palette";
 import LogoDesigns from "./steps/logo-designs";
@@ -53,20 +53,21 @@ const Create = () => {
               <ArrowLeft />
               Go Back
             </Button>
-            <Button
-              className="custom-button"
-              onClick={() => incStep(1)}
-              disabled={
-                (formData["title"] === undefined && step === 1) ||
-                (formData["desc"] === undefined && step === 2) ||
-                (formData["palette"] === undefined && step === 3) ||
-                (formData["design"] === undefined && step === 4) ||
-                step === 5
-              }
-            >
-              Continue
-              <ArrowRight />
-            </Button>
+            {step === 5 ? null : (
+              <Button
+                className="custom-button"
+                onClick={() => incStep(1)}
+                disabled={
+                  (formData["title"] === undefined && step === 1) ||
+                  (formData["desc"] === undefined && step === 2) ||
+                  (formData["palette"] === undefined && step === 3) ||
+                  (formData["design"] === undefined && step === 4)
+                }
+              >
+                Continue
+                <ArrowRight />
+              </Button>
+            )}
           </div>
         )}
       </div>

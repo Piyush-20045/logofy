@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PenLine } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useStore } from "@/stores/store";
+import { useStore } from "@/stores/steps-store";
 import HeadingDesc from "../../_components/heading-desc";
 
 // Define props interface

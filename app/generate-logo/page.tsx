@@ -1,6 +1,6 @@
 "use client";
 import PROPMT from "@/app/_data/Prompt";
-import { useStore } from "@/stores/store";
+import { useStore } from "@/stores/steps-store";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { redirect, useRouter } from "next/navigation";

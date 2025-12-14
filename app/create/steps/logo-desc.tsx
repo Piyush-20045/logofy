@@ -2,7 +2,7 @@
 import { Input } from "@/components/ui/input";
 import HeadingDesc from "../../_components/heading-desc";
 import { useEffect, useState } from "react";
-import { useStore } from "@/stores/store";
+import { useStore } from "@/stores/steps-store";
 
 // Define props interface
 interface LogoTitleProps {
