@@ -4,10 +4,15 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { BadgeCheck, Check } from "lucide-react";
 import { plans } from "@/app/_data/pricing";
 import { useEffect, useState } from "react";
-import { CreateFormData } from "@/stores/store";
+import { CreateFormData } from "@/stores/steps-store";
+import { useUser } from "@clerk/nextjs";
+import Link from "next/link";
 
 const Pricing = ({ formData }: { formData: CreateFormData }) => {
   const [selectedPlan, setSelectedPlan] = useState("Premium");
+  const { isSignedIn } = useUser();
+  console.log(selectedPlan);
+  
 
   useEffect(() => {
     if (formData.title && typeof window !== "undefined") {
@@ -49,7 +54,8 @@ const Pricing = ({ formData }: { formData: CreateFormData }) => {
             {/* Price and Check sign */}
             <div className="flex items-center justify-between">
               <p className="text-4xl font-semibold text-gray-800">
-                {plan.price}
+                {plan.price.split(" ")[0]}
+                <span className="text-2xl">{plan.price.split(" ")[1]}</span>
               </p>
               <span>
                 {selectedPlan === plan.name ? (
@@ -72,12 +78,15 @@ const Pricing = ({ formData }: { formData: CreateFormData }) => {
               ))}
             </ul>
             {/* Select Button */}
+            <Link href={isSignedIn ? "/generate-logo" : "/sign-up"}>
             <Button
               onClick={() => setSelectedPlan(plan.name)}
-              className="text-md rounded-full custom-button"
+              className="w-full text-md rounded-full custom-button"
             >
-              {selectedPlan === plan.name ? "Selected" : "Select"}
+              Generate Logo
+              {/* {selectedPlan === plan.name ? "Selected" : "Select"} */}
             </Button>
+            </Link>
           </Card>
         ))}
       </div>

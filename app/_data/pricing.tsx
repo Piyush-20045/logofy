@@ -12,7 +12,7 @@ export const plans = [
   },
   {
     name: "Premium",
-    price: "15$/month",
+    price: "199₹/50 Credits",
     features: [
       "50 logo generations",
       "High quality (2048x2048)",
