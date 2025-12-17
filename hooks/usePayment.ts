@@ -63,7 +63,7 @@ export const usePayment = ({
             if (verifyPayment.data.success) {
               // redirecting user to success page
               router.push(
-                `/payment/success?payment_id=${verifyPayment.data.razorpay_payment_id}&orderId=${verifyPayment.data.razorpay_order_id}`
+                `/payment/success?payment_id=${verifyPayment.data.paymentId}&order_id=${verifyPayment.data.orderId}`
               );
             } else {
               setError("Payment verification failed. Please contact support.");
