@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export async function POST(req: NextRequest) {
   try {
@@ -34,16 +35,45 @@ export async function POST(req: NextRequest) {
         return false;
       }
     };
-    const isValidPayment = isValid();
+    const isPaymentValid = isValid();
 
-    if (isValidPayment) {
-      // Payment is verified successfully
-      // Update database here
-      console.log("Payment verified successfully:", {
-        orderId: razorpay_order_id,
-        paymentId: razorpay_payment_id,
-        userId,
-      });
+    // if payment is valid then UPDATING THE DATABASE
+    if (isPaymentValid) {
+      try {
+        //get current credits
+        const { data: userData } = await supabaseAdmin
+          .from("users")
+          .select("credits")
+          .eq("id", userId)
+          .single();
+
+        const currectCredits = userData?.credits || 0;
+
+        // UPDATING USER DB: set plan_type as premium and add 50 credits
+        const { error: userError } = await supabaseAdmin
+          .from("users")
+          .update({ plan_type: "premium", credits: currectCredits + 50 })
+          .eq("id", userId);
+
+        if (userError) {
+          console.error("Error in updating the user db", userError);
+        }
+
+        // UPDATING PAYMENTS DB: insert payment details
+        const { error: paymentError } = await supabaseAdmin
+          .from("payments")
+          .insert({
+            payment_id: razorpay_payment_id,
+            order_id: razorpay_order_id,
+            user_id: userId,
+          });
+
+        if (paymentError) {
+          console.error("Error in updating the payments db", paymentError);
+        }
+      } catch (dbError) {
+        console.error("Database error:", dbError);
+      }
 
       return NextResponse.json({
         success: true,
