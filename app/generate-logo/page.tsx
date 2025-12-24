@@ -13,6 +13,7 @@ import { downloadLogo } from "@/lib/utils/logo-utils";
 const GenerateAILogo = () => {
   const formData = useStore((s) => s.formData);
   const clearFormData = useStore((s) => s.clearFormData);
+  const clearSteps = useStore((s) => s.clearStep);
   const router = useRouter();
 
   const [logoImage, setLogoImage] = useState("");
@@ -40,7 +41,9 @@ const GenerateAILogo = () => {
           desc: formData?.desc,
         });
         setLogoImage(response?.data.image);
+        console.log(response.data);
         clearFormData();
+        clearSteps();
       } catch (error) {
         console.error("Error generating logo:", error);
       } finally {

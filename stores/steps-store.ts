@@ -16,6 +16,7 @@ interface StoreState {
   step: number;
   incStep: (step: number) => void;
   decStep: (step: number) => void;
+  clearStep: () => void;
   formData: CreateFormData;
   setFormData: (field: string, value: string | object) => void;
   clearFormData: () => void;
@@ -27,6 +28,7 @@ export const useStore = create<StoreState>()(
       step: 1,
       incStep: () => set((state) => ({ step: state.step + 1 })),
       decStep: () => set((state) => ({ step: state.step - 1 })),
+      clearStep: () => set({ step: 1 }),
       formData: {},
       setFormData: (field: string, value: string | object) =>
         set((state) => ({
