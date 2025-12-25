@@ -1,9 +1,11 @@
 import { GoogleGenAI } from "@google/genai";
 import axios from "axios";
+import Replicate from "replicate";
+import { supabaseAdmin } from "./supabaseAdmin";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-// Generate AI Text Prompt for Logo
+// Generate AI TEXT PROMPT
 export async function aiPrompt(prompt: string) {
   try {
     const response = await ai.models.generateContent({
@@ -26,23 +28,92 @@ export async function aiPrompt(prompt: string) {
   }
 }
 
-// Generate Logo from AI Image Model
-export const aiImage = async (prompt: string) => {
-  // Pollinations.ai - completely free, no API key required
-  const encodedPrompt = encodeURIComponent(prompt);
-  const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true&model=flux`;
+// Generate Logo from AI IMAGE MODEL
+export const aiImage = async (prompt: string, user_id: string) => {
+  // Getting user data
+  const { data: userData } = await supabaseAdmin
+    .from("users")
+    .select("*")
+    .eq("id", user_id)
+    .single();
 
-  // Fetch image from Pollinations
-  const response = await axios.get(imageUrl, {
-    responseType: "arraybuffer",
-    timeout: 60000,
-  });
+  // DEDUCTING CREDIT
+  const { error: deductError } = await supabaseAdmin
+    .from("users")
+    .update({ credits: userData.credits - 1 })
+    .eq("id", user_id);
 
-  // Convert binary data to base64(encoded string)
-  const buffer = Buffer.from(response.data, "binary");
-  const base64Image = buffer.toString("base64");
+  if (deductError) {
+    throw new Error("Error in deducting credit");
+  }
 
-  const base64ImageWithMime = `data:image/jpeg;base64,${base64Image}`;
+  // REEPLICATE'S PAID AI
+  if (userData.plan_type === "premium" && userData.credits > 0) {
+    try {
+      const replicate = new Replicate({
+        auth: process.env.REPLICATE_API_TOKEN,
+      });
+      const output = await replicate.run(
+        "bytedance/hyper-flux-8step:16084e9731223a4367228928a6cb393b21736da2a0ca6a5a492ce311f0a97143",
+        {
+          input: {
+            seed: 0,
+            width: 848,
+            height: 848,
+            prompt: prompt,
+            num_outputs: 1,
+            aspect_ratio: "1:1",
+            output_format: "png",
+            guidance_scale: 3.5,
+            output_quality: 80,
+            num_inference_steps: 8,
+          },
+        }
+      );
+      const base64ImageWithMime = await ConvertImageToBase64(output);
+      return {
+        imageUrl: base64ImageWithMime,
+        creditsUsed: 1,
+        remainingCredits: userData.credits - 1,
+        model: "replicate",
+      };
+    } catch (err) {
+      // IF GENERATION FAILS, REFUNDING THE CREDIT
+      await supabaseAdmin
+        .from("users")
+        .update({ credits: userData.credits })
+        .eq("id", user_id);
 
-  return base64ImageWithMime;
+      throw new Error("Image generation failed");
+    }
+  } else {
+    // POLLINATIONS.AI
+    const encodedPrompt = encodeURIComponent(prompt);
+    const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true&model=flux`;
+
+    // Fetch image from Pollinations
+    const response = await axios.get(imageUrl, {
+      responseType: "arraybuffer",
+      timeout: 60000,
+    });
+
+    // Convert binary data to base64(encoded string)
+    const buffer = Buffer.from(response.data, "binary");
+    const base64Image = buffer.toString("base64");
+
+    const base64ImageWithMime = `data:image/jpeg;base64,${base64Image}`;
+
+    return {
+      imageUrl: base64ImageWithMime,
+      creditsUsed: 1,
+      remainingCredits: userData.credits - 1,
+      model: "pollinations",
+    };
+  }
 };
+
+async function ConvertImageToBase64(image: any) {
+  const res = await axios.get(image, { responseType: "arraybuffer" });
+  const base64ImageRaw = Buffer.from(res.data).toString("base64");
+  return `data: image/png;base64,${base64ImageRaw}`;
+}

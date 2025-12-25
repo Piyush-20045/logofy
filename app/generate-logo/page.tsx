@@ -41,7 +41,6 @@ const GenerateAILogo = () => {
           desc: formData?.desc,
         });
         setLogoImage(response?.data.image);
-        console.log(response.data);
         clearFormData();
         clearSteps();
       } catch (error) {

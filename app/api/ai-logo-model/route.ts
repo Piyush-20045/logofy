@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     const improvedPrompt = await aiPrompt(prompt);
 
     // Generate AI LOGO using Image Model
-    const logoImage = await aiImage(improvedPrompt.prompt);
+    const aiImgResponse = await aiImage(improvedPrompt.prompt, user_id);
 
     // Save image to Supabase Storage and record in DB (if user_id exists)
     try {
@@ -19,13 +19,17 @@ export async function POST(req: Request) {
           user_id,
           title,
           desc,
-          image: logoImage,
+          image: aiImgResponse.imageUrl,
         });
       }
     } catch (dbErr) {
       console.error("Error saving logo to DB:", dbErr);
     }
-    return NextResponse.json({ image: logoImage });
+    return NextResponse.json({
+      image: aiImgResponse.imageUrl,
+      creditsUsed: aiImgResponse.creditsUsed,
+      remainingCredits: aiImgResponse.creditsUsed,
+    });
   } catch (e) {
     console.error("Error generating AI logo prompt:", e);
     return NextResponse.json(
