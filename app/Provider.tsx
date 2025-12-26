@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import Header from "@/app/_components/header";
 import { useUser } from "@clerk/nextjs";
+import Footer from "./_components/footer";
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUser();
@@ -17,6 +18,7 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
     <div>
       <Header />
       {children}
+      <Footer />
     </div>
   );
 };

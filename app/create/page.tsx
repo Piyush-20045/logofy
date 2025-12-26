@@ -21,7 +21,7 @@ const Create = () => {
   };
 
   return (
-    <div className="bg-[url('/bg.webp')] bg-center bg-cover flex flex-col items-center">
+    <div className="bg-[url('/bg.webp')] bg-center bg-cover flex flex-col items-center min-h-screen">
       <div className="mx-2 md:mx-28 my-20 p-4 md:p-6 border border-black/10 rounded-2xl bg-blue-100 md:min-w-xl shadow-lg shadow-black/10">
         {step === 1 ? (
           <LogoTitle
