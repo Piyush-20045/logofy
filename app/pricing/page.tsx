@@ -3,36 +3,28 @@ import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { BadgeCheck, Check } from "lucide-react";
 import { plans } from "@/app/_data/pricing";
-import { useEffect, useState } from "react";
-import { CreateFormData } from "@/stores/steps-store";
+import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 
-const Pricing = ({ formData }: { formData: CreateFormData }) => {
+const Pricing = () => {
   const [selectedPlan, setSelectedPlan] = useState("Premium");
   const { isSignedIn } = useUser();
-
-  useEffect(() => {
-    if (formData.title && typeof window !== "undefined") {
-      localStorage.setItem("FormData", JSON.stringify(formData));
-    }
-  }, [formData]);
-
   return (
-    <div className="md:px-8">
+    <div className="py-12 md:px-8">
       {/* Heading */}
       <h2 className="text-3xl md:text-4xl font-bold text-gray-800 text-center flex justify-center items-center gap-1">
-        Choose a plan
+        Pricing of the tokens
       </h2>
       <p className="mt-1 mb-8 text-xl font-medium text-gray-700 text-center">
-        Select a plan to generate your logo
+        Buy more credits for premium logos
       </p>
       {/* Pricing Cards */}
       <div className="flex flex-col md:flex-row justify-center gap-8">
         {plans.map((plan) => (
           <Card
             key={plan.name}
-            className={`p-6 w-full min-w-80 lg:min-w-sm border border-gray-400 bg-gray-50 rounded-xl shadow-lg transition-all duration-200 ${
+            className={`p-6 min-w-80 lg:min-w-sm border border-gray-400 bg-gray-50 rounded-xl shadow-lg transition-all duration-200 ${
               selectedPlan === plan.name
                 ? "scale-99 border-3 border-blue-500"
                 : ""
@@ -76,13 +68,20 @@ const Pricing = ({ formData }: { formData: CreateFormData }) => {
               ))}
             </ul>
             {/* Select Button */}
-            <Link href={isSignedIn ? "/generate-logo" : "/sign-up"}>
+            <Link
+              href={
+                !isSignedIn
+                  ? "/sign-up"
+                  : selectedPlan === plan.name
+                  ? "/payment"
+                  : "/create"
+              }
+            >
               <Button
                 onClick={() => setSelectedPlan(plan.name)}
                 className="w-full text-md rounded-full custom-button"
               >
-                Generate Logo
-                {/* {selectedPlan === plan.name ? "Selected" : "Select"} */}
+                {selectedPlan === plan.name ? "Buy" : "Generate free"}
               </Button>
             </Link>
           </Card>
