@@ -42,9 +42,6 @@ const header = () => {
       {/* LOGO */}
       <Link href="/" className="flex items-center cursor-pointer">
         <Image width={55} height={55} src="/logo.png" alt="logo" />
-        <span className="font-bold text-3xl bg-linear-to-tl from-blue-400 via-slate-600 to-blue-400 bg-clip-text text-transparent">
-          logofy
-        </span>
       </Link>
 
       {/* NAV LINKS */}
