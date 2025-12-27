@@ -26,7 +26,7 @@ const Pricing = () => {
             key={plan.name}
             className={`p-6 min-w-80 lg:min-w-sm border border-gray-400 bg-gray-50 rounded-xl shadow-lg transition-all duration-200 ${
               selectedPlan === plan.name
-                ? "scale-99 border-3 border-blue-500"
+                ? "scale-99 border-3 border-teal-500"
                 : ""
             }`}
           >

@@ -30,7 +30,7 @@ const Hero = () => {
       <p className="flex gap-1 text-lg md:text-xl font-semibold text-gray-400">
         <Star /> Make a Logo in 5 Minutes
       </p>
-      <h1 className="mt-5 text-4xl md:text-6xl font-bold text-blue-600">
+      <h1 className="mt-5 text-4xl md:text-6xl font-bold text-teal-500">
         The Ultimate AI Logo Maker
       </h1>
       <p className="mt-3 text-xl md:text-2xl text-gray-600 font-semibold">

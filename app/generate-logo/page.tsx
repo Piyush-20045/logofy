@@ -58,7 +58,7 @@ const GenerateAILogo = () => {
       {/* LOADING STATE */}
       {(isLoading || !isLoaded) && (
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-600 border-solid mb-4 mx-auto"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-teal-600 border-solid mb-4 mx-auto"></div>
           <h2 className="text-2xl font-semibold text-gray-800 mb-2">
             Creating your logo...
           </h2>
@@ -96,7 +96,7 @@ const GenerateAILogo = () => {
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <Button
               onClick={() => downloadLogo(logoImage, formData?.title || "logo")}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3"
+              className="flex-1 bg-teal-600 hover:bg-teal-700 text-white py-3"
               size="lg"
             >
               <Download className="w-5 h-5 mr-2" />
@@ -106,7 +106,7 @@ const GenerateAILogo = () => {
             <Link href="/dashboard" className="flex-1">
               <Button
                 variant="outline"
-                className="w-full border-blue-200 text-blue-600 hover:bg-blue-50"
+                className="w-full border-blue-200 text-teal-600 hover:bg-teal-50"
                 size="lg"
               >
                 <LayoutDashboard className="w-5 h-5 mr-2" />
@@ -157,7 +157,7 @@ const GenerateAILogo = () => {
           </p>
           <div className="flex flex-col gap-3">
             <Link href="/create">
-              <Button className="w-full bg-blue-600 hover:bg-blue-700">
+              <Button className="w-full bg-teal-600 hover:bg-teal-700">
                 Try Again
               </Button>
             </Link>

@@ -12,8 +12,8 @@ const FeatureCard = ({
   description: string;
 }) => {
   return (
-    <div className="p-6 group flex flex-col items-center rounded-xl transition-all text-center border hover:border-blue-500 shadow-md cursor-pointer">
-      <div className="mb-4 p-3 inline-flex rounded-lg bg-blue-400/30 text-blue-600 transition-transform group-hover:scale-110">
+    <div className="p-6 group flex flex-col items-center rounded-xl transition-all text-center border hover:border-teal-300 shadow-md cursor-pointer">
+      <div className="mb-4 p-3 inline-flex rounded-lg bg-teal-300/30 text-teal-500 transition-transform group-hover:scale-110">
         {icon}
       </div>
       <h3 className="mb-2 text-lg font-semibold">{title}</h3>

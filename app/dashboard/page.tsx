@@ -81,7 +81,7 @@ const Dashboard = () => {
           </div>
           <Link
             href="/create"
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+            className="bg-linear-to-tl from-teal-400 to-teal-500 text-white px-4 py-2 rounded-lg"
           >
             + Create New
           </Link>
@@ -129,14 +129,14 @@ const Dashboard = () => {
                 {logo.desc || "No description"}
               </p>
 
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center flex-wrap gap-2">
                 {/* Download Button */}
                 <Button
                   onClick={() =>
                     downloadLogo(logo.image_url, logo.title || "logo")
                   }
                   variant="outline"
-                  className="text-blue-600 border border-blue-200 hover:bg-blue-50 hover:text-blue-700 transition cursor-pointer"
+                  className="w-fit flex-1 text-teal-600 border border-teal-400 hover:bg-teal-50 hover:text-teal-700 transition cursor-pointer"
                 >
                   <Download />
                   Download
@@ -145,7 +145,7 @@ const Dashboard = () => {
                 <Button
                   onClick={() => handleDelete(logo.id, logo.image_url)}
                   variant="destructive"
-                  className="hover:bg-red-700 transition cursor-pointer"
+                  className="w-fit flex-1 hover:bg-red-700 transition cursor-pointer"
                 >
                   <Trash />
                   Delete
