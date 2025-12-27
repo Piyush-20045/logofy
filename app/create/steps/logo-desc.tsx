@@ -1,6 +1,6 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import HeadingDesc from "../../_components/heading-desc";
+import HeadingDesc from "../../../components/heading-desc";
 import { useEffect, useState } from "react";
 import { useStore } from "@/stores/steps-store";
 

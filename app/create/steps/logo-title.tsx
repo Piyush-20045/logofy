@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { PenLine } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useStore } from "@/stores/steps-store";
-import HeadingDesc from "../../_components/heading-desc";
+import HeadingDesc from "../../../components/heading-desc";
 
 // Define props interface
 interface LogoTitleProps {

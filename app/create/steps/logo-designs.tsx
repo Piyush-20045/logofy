@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import Designs from "@/app/_data/designs";
 import { useState, useEffect } from "react";
-import HeadingDesc from "@/app/_components/heading-desc";
+import HeadingDesc from "@/components/heading-desc";
 import { useStore } from "@/stores/steps-store";
 
 interface StyleSelectorProps {

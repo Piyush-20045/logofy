@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect } from "react";
-import Header from "@/app/_components/header";
+import Header from "@/components/header";
 import { useUser } from "@clerk/nextjs";
-import Footer from "./_components/footer";
+import Footer from "../components/footer";
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUser();
