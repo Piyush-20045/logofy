@@ -7,16 +7,50 @@ import { useEffect, useState } from "react";
 import { CreateFormData } from "@/stores/steps-store";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
 
 const Pricing = ({ formData }: { formData: CreateFormData }) => {
+  const router = useRouter();
+  const { isSignedIn, user } = useUser();
   const [selectedPlan, setSelectedPlan] = useState("Premium");
-  const { isSignedIn } = useUser();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (formData.title && typeof window !== "undefined") {
       localStorage.setItem("FormData", JSON.stringify(formData));
     }
   }, [formData]);
+
+  useEffect(() => {
+    const fetchPlan = async () => {
+      try {
+        const { data } = await supabase
+          .from("users")
+          .select("plan_type")
+          .eq("id", user?.id)
+          .single();
+
+        if (data?.plan_type === "premium") {
+          router.push("/generate-logo");
+        }
+      } catch (error) {
+        console.log("Error in fetching user's plan type", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPlan();
+  }, [user?.id]);
+
+  // LOADING STATE
+  if (loading)
+    return (
+      <div className="my-24 text-center">
+        <div className="mb-2 animate-spin rounded-full h-16 w-16 border-t-4 border-teal-600 border-solid mx-auto"></div>
+        <p>Wait, it's loading now...</p>
+      </div>
+    );
 
   return (
     <div className="md:px-8">
@@ -34,7 +68,7 @@ const Pricing = ({ formData }: { formData: CreateFormData }) => {
             key={plan.name}
             className={`p-6 w-full min-w-80 lg:min-w-sm border border-gray-400 bg-gray-50 rounded-xl shadow-lg transition-all duration-200 ${
               selectedPlan === plan.name
-                ? "scale-99 border-3 border-blue-500"
+                ? "scale-99 border-3 border-teal-500"
                 : ""
             }`}
           >
