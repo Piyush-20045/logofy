@@ -9,11 +9,13 @@ import { Button } from "@/components/ui/button";
 import { Download, ArrowLeft, Sparkles, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { downloadLogo } from "@/lib/utils/logo-utils";
+import { useCreditStore } from "@/stores/credit-store";
 
 const GenerateAILogo = () => {
   const formData = useStore((s) => s.formData);
   const clearFormData = useStore((s) => s.clearFormData);
   const clearSteps = useStore((s) => s.clearStep);
+  const { fetchCredits } = useCreditStore();
   const router = useRouter();
 
   const [logoImage, setLogoImage] = useState("");
@@ -41,6 +43,9 @@ const GenerateAILogo = () => {
           desc: formData?.desc,
         });
         setLogoImage(response?.data.image);
+        if (user?.id) {
+          await fetchCredits(user?.id);
+        }
         clearFormData();
         clearSteps();
       } catch (error) {

@@ -6,37 +6,20 @@ import Link from "next/link";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { useCreditStore } from "@/stores/credit-store";
 
 // Header Component
 const header = () => {
   const { isLoaded, isSignedIn, user } = useUser();
-  const [credits, setCredits] = useState();
+  const { credits, fetchCredits } = useCreditStore();
 
   // FETCHING CREDITS
   useEffect(() => {
-    if (!isLoaded || !user) return;
+    if (isLoaded && user?.id) {
+      fetchCredits(user.id);
+    }
+  }, [user?.id, isLoaded, fetchCredits]);
 
-    const fetchCredits = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("users")
-          .select("credits")
-          .eq("id", user?.id)
-          .single();
-
-        console.log(data?.credits);
-
-        if (error) {
-          console.error("Error fetching logos:", error);
-        } else {
-          setCredits(data.credits);
-        }
-      } catch (err) {
-        console.error("error loading credits", err);
-      }
-    };
-    fetchCredits();
-  }, [user, isLoaded]);
   return (
     <div className="px-3 md:px-20 2xl:px-56 py-2 flex justify-between items-center shadow-sm">
       {/* LOGO */}
