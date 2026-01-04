@@ -44,7 +44,7 @@ const Hero = () => {
           placeholder="Enter your Logo name..."
           value={title}
           onChange={handleChange}
-          className="h-14 md:w-5/6 text-lg! font-semibold text-gray-800 bg-white shadow-md shadow-black/10 placeholder:text-gray-400 focus:ring-blue-200!"
+          className="h-14 md:w-5/6 text-lg! font-semibold text-gray-800 bg-white shadow-md shadow-black/10 placeholder:text-gray-400 focus:ring-teal-100!"
         />
         <Link href={`/create?title=${title}`} className="w-full md:w-auto">
           <Button className="h-14 w-full md:w-fit text-lg flex items-center gap-2 custom-button">
