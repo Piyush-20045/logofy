@@ -1,5 +1,5 @@
 import HeadingDesc from "../../../components/heading-desc";
-import colors from "../../_data/colors";
+import colors from "../../../data/colors";
 import { Label } from "@/components/ui/label";
 import { useState, useEffect } from "react";
 import { useStore } from "@/stores/steps-store";

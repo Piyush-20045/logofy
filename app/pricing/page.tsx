@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { BadgeCheck, Check } from "lucide-react";
-import { plans } from "@/app/_data/pricing";
+import { plans } from "@/data/pricing";
 import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
