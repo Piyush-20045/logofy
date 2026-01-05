@@ -10,12 +10,13 @@ import { Download, ArrowLeft, Sparkles, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { downloadLogo } from "@/lib/utils/logo-utils";
 import { useCreditStore } from "@/stores/credit-store";
+import toast from "react-hot-toast";
 
 const GenerateAILogo = () => {
   const formData = useStore((s) => s.formData);
   const clearFormData = useStore((s) => s.clearFormData);
   const clearSteps = useStore((s) => s.clearStep);
-  const { fetchCredits } = useCreditStore();
+  const { credits, fetchCredits } = useCreditStore();
   const router = useRouter();
 
   const [logoImage, setLogoImage] = useState("");
@@ -28,6 +29,10 @@ const GenerateAILogo = () => {
     if (!isLoaded || calledOnce.current) return;
 
     if (!formData.title || !formData.desc) redirect("/create");
+    if (credits === 0) {
+      toast.error("You have 0 credits remaining!");
+      redirect("/pricing");
+    }
 
     // Lock the door immediately so it doesn't run again
     calledOnce.current = true;
