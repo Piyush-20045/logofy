@@ -15,9 +15,9 @@ export async function POST() {
 
     const { data, error } = await supabaseAdmin
       .from("users")
-      .upsert([{ id, name, email, credits: 5 }], { onConflict: "email" });
+      .insert([{ id, name, email }]);
 
-    if (error) throw error;
+    if (error && error.code !== "23505") throw error;
 
     return NextResponse.json({ message: "User saved successfully", data });
   } catch (err) {
