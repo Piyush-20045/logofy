@@ -99,7 +99,7 @@ const Dashboard = () => {
             <p className="text-gray-400 mb-6">
               You haven't generated any logos yet.
             </p>
-            <Link href="/generate-logo" className="text-blue-600 underline">
+            <Link href="/create" className="text-blue-600 underline">
               Generate your first logo
             </Link>
           </div>

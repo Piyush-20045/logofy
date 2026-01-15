@@ -30,12 +30,12 @@ const LogoPalette = ({ onHandleInputChange }: LogoTitleProps) => {
           // Label & Single Palette
           <div
             key={palette.name}
-            className="group h-36 w-full flex flex-col border rounded-2xl"
+            className="group h-36 w-full flex flex-col border rounded"
           >
             <div
-              className={`flex cursor-pointer hover:scale-95 duration-300 transition-all active:scale-95 rounded-2xl ${
+              className={`flex cursor-pointer hover:scale-95 duration-300 transition-all active:scale-95 rounded ${
                 selectedPalette === palette.name &&
-                "p-1 border border-gray-500 rounded-xl"
+                "p-0.5 border-2 border-gray-400 rounded"
               }`}
             >
               {palette.colors.map((color) => (
@@ -51,7 +51,7 @@ const LogoPalette = ({ onHandleInputChange }: LogoTitleProps) => {
                 ></div>
               ))}
             </div>
-            <Label className="p-1.5 w-fit border border-gray-300 rounded-xl bg-blue-200 text-gray-800 group-hover:bg-blue-300 duration-300 transition-all">
+            <Label className="p-1.5 w-fit border border-gray-300 rounded bg-blue-200 text-gray-800 group-hover:bg-blue-300 duration-300 transition-all">
               {palette.name}
             </Label>
           </div>

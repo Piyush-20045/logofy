@@ -20,7 +20,7 @@ const Pricing = () => {
         Buy more credits for premium logos
       </p>
       {/* Pricing Cards */}
-      <div className="flex flex-col md:flex-row justify-center gap-8">
+      <div className="mx-4 flex flex-col md:flex-row justify-center gap-8">
         {plans.map((plan) => (
           <Card
             key={plan.name}
