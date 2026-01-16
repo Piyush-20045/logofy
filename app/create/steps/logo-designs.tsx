@@ -44,7 +44,7 @@ const LogoDesigns = ({ onHandleInputChange }: StyleSelectorProps) => {
           >
             <div className="relative flex items-start justify-between -mb-3 md:-mb-1">
               {/* Style Name */}
-              <h3 className="w-5/6 h-5 font-semibold text-sm md:text-md text-wrap">
+              <h3 className="w-5/6 h-10 md:h-5 font-semibold text-sm md:text-md text-wrap">
                 {style.title}
               </h3>
               {/* Check Symbol */}

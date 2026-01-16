@@ -1,9 +1,8 @@
 "use client";
-import LogoTitle from "./steps/logo-title";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/stores/steps-store";
-import LogoDesc from "./steps/logo-desc";
+import LogoTitle from "./steps/logo-title";
 import LogoPalette from "./steps/logo-palette";
 import LogoDesigns from "./steps/logo-designs";
 import Pricing from "./steps/pricing";
@@ -24,22 +23,18 @@ const Create = () => {
     <div className="bg-[url('/bg.webp')] bg-center bg-cover flex flex-col items-center min-h-screen">
       <div className="mx-2 md:mx-28 my-20 p-4 md:p-6 border border-black/10 rounded-2xl bg-blue-100 md:min-w-xl shadow-lg shadow-black/10">
         {step === 1 ? (
-          <LogoTitle
-            onHandleInputChange={(v) => onHandleInputChange("title", v)}
-          />
+          <div>
+            <LogoTitle onHandleInputChange={onHandleInputChange} />
+          </div>
         ) : step === 2 ? (
-          <LogoDesc
-            onHandleInputChange={(v) => onHandleInputChange("desc", v)}
-          />
-        ) : step === 3 ? (
           <LogoPalette
             onHandleInputChange={(v) => onHandleInputChange("palette", v)}
           />
-        ) : step === 4 ? (
+        ) : step === 3 ? (
           <LogoDesigns
             onHandleInputChange={(v) => onHandleInputChange("design", v)}
           />
-        ) : step === 5 ? (
+        ) : step === 4 ? (
           <Pricing formData={formData} />
         ) : null}
 
@@ -53,15 +48,16 @@ const Create = () => {
               <ArrowLeft />
               Go Back
             </Button>
-            {step === 5 ? null : (
+            {step === 4 ? null : (
               <Button
                 className="custom-button"
                 onClick={() => incStep(1)}
                 disabled={
-                  (formData["title"] === undefined && step === 1) ||
-                  (formData["desc"] === undefined && step === 2) ||
-                  (formData["palette"] === undefined && step === 3) ||
-                  (formData["design"] === undefined && step === 4)
+                  (formData["title"] === undefined &&
+                    formData["desc"] === undefined &&
+                    step === 1) ||
+                  (formData["palette"] === undefined && step === 2) ||
+                  (formData["design"] === undefined && step === 3)
                 }
               >
                 Continue
