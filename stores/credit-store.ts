@@ -22,6 +22,7 @@ export const useCreditStore = create<CreditStore>((set) => ({
 
       if (error) {
         console.error("Error fetching credits:", error);
+        set({ isLoading: false });
         return;
       }
 

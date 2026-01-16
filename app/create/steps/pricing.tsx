@@ -110,13 +110,20 @@ const Pricing = ({ formData }: { formData: CreateFormData }) => {
               ))}
             </ul>
             {/* Select Button */}
-            <Link href={isSignedIn ? "/generate-logo" : "/sign-up"}>
+            <Link
+              href={
+                !isSignedIn
+                  ? "/sign-up"
+                  : selectedPlan === plan.name
+                  ? "/pricing"
+                  : "/generate-logo"
+              }
+            >
               <Button
                 onClick={() => setSelectedPlan(plan.name)}
                 className="w-full text-md rounded-full custom-button"
               >
                 Generate Logo
-                {/* {selectedPlan === plan.name ? "Selected" : "Select"} */}
               </Button>
             </Link>
           </Card>

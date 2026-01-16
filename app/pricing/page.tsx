@@ -3,13 +3,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { BadgeCheck, Check } from "lucide-react";
 import { plans } from "@/data/pricing";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
+import { useStore } from "@/stores/steps-store";
 import Link from "next/link";
 
 const Pricing = () => {
   const [selectedPlan, setSelectedPlan] = useState("Premium");
   const { isSignedIn } = useUser();
+  const { clearStep } = useStore();
+
+  useEffect(() => {
+    clearStep();
+  }, []);
+
   return (
     <div className="py-12 md:px-8">
       {/* Heading */}

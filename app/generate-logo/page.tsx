@@ -16,7 +16,7 @@ const GenerateAILogo = () => {
   const formData = useStore((s) => s.formData);
   const clearFormData = useStore((s) => s.clearFormData);
   const clearSteps = useStore((s) => s.clearStep);
-  const { credits, fetchCredits } = useCreditStore();
+  const { credits, fetchCredits, isLoading: creditsLoading } = useCreditStore();
   const router = useRouter();
 
   const [logoImage, setLogoImage] = useState("");
@@ -29,7 +29,8 @@ const GenerateAILogo = () => {
     if (!isLoaded || calledOnce.current) return;
 
     if (!formData.title || !formData.desc) redirect("/create");
-    if (credits === 0) {
+
+    if (credits === 0 || !creditsLoading) {
       toast.error("You have 0 credits remaining!");
       redirect("/pricing");
     }
