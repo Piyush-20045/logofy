@@ -6,6 +6,7 @@ import LogoTitle from "./steps/logo-title";
 import LogoPalette from "./steps/logo-palette";
 import LogoDesigns from "./steps/logo-designs";
 import Pricing from "./steps/pricing";
+import { Suspense } from "react";
 
 // Create page component
 const Create = () => {
@@ -23,9 +24,9 @@ const Create = () => {
     <div className="bg-[url('/bg.webp')] bg-center bg-cover flex flex-col items-center min-h-screen">
       <div className="mx-2 md:mx-28 my-20 p-4 md:p-6 border border-black/10 rounded-2xl bg-blue-100 md:min-w-xl shadow-lg shadow-black/10">
         {step === 1 ? (
-          <div>
+          <Suspense fallback={<div>Loading...</div>}>
             <LogoTitle onHandleInputChange={onHandleInputChange} />
-          </div>
+          </Suspense>
         ) : step === 2 ? (
           <LogoPalette
             onHandleInputChange={(v) => onHandleInputChange("palette", v)}
