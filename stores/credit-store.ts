@@ -4,14 +4,17 @@ import { create } from "zustand";
 interface CreditStore {
   credits: number | null;
   isLoading: boolean;
-  fetchCredits: (userId: string) => Promise<void>;
+  fetchCredits: (userId: string, retryCount?: number) => Promise<void>;
 }
 
-export const useCreditStore = create<CreditStore>((set) => ({
+const createCreditStore = create<CreditStore>((set) => ({
   credits: null,
   isLoading: false,
 
-  fetchCredits: async (userId) => {
+  fetchCredits: async (userId, retryCount = 0): Promise<void> => {
+    const MAX_RETRIES = 3;
+    const RETRY_DELAY = 1000;
+
     set({ isLoading: true });
     try {
       const { data, error } = await supabase
@@ -21,6 +24,20 @@ export const useCreditStore = create<CreditStore>((set) => ({
         .single();
 
       if (error) {
+        if (error.code === "PGRST116" && retryCount < MAX_RETRIES) {
+          console.log(
+            `User not found, retrying (${retryCount + 1}/${MAX_RETRIES})...`
+          );
+
+          await new Promise((resolve) =>
+            setTimeout(resolve, RETRY_DELAY * (retryCount + 1))
+          );
+
+          return await createCreditStore
+            .getState()
+            .fetchCredits(userId, retryCount + 1);
+        }
+
         console.error("Error fetching credits:", error);
         set({ isLoading: false });
         return;
@@ -33,3 +50,5 @@ export const useCreditStore = create<CreditStore>((set) => ({
     }
   },
 }));
+
+export const useCreditStore = createCreditStore;

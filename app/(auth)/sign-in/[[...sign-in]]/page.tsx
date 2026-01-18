@@ -2,7 +2,7 @@ import { SignIn as Login } from "@clerk/nextjs";
 
 const SignIn = () => {
   return (
-    <div className="py-9 flex justify-center items-center">
+    <div className="min-h-screen py-9 flex justify-center items-center">
       <Login />
     </div>
   );
