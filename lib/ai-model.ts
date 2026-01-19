@@ -70,9 +70,11 @@ export const aiImage = async (prompt: string, user_id: string) => {
           },
         }
       );
-      const base64ImageWithMime = await ConvertImageToBase64(output);
+
+      const tempImageUrl = output[0].url().href;
+
       return {
-        imageUrl: base64ImageWithMime,
+        imageUrl: tempImageUrl,
         creditsUsed: 1,
         remainingCredits: userData.credits - 1,
         model: "replicate",

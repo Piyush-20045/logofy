@@ -4,11 +4,24 @@ import { decode } from "base64-arraybuffer";
 
 export async function saveLogoToDb({ user_id, title, desc, image }: any) {
   try {
-    // 1. CONVERSION OF BASE64 INTO ArrayBuffer to save into SUPABASE BUCKET
-    // Base64 comes with a prefix like "data:image/png;base64,".
-    const base64Data = image.includes("base64")
-      ? image.split("base64,")[1]
-      : image;
+    let base64Data: string;
+
+    // Checking if image is a URL or base64
+    if (image.startsWith("http://") || image.startsWith("https://")) {
+      // Download the image from Replicate URL
+      const response = await fetch(image);
+      const arrayBuffer = await response.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      base64Data = buffer.toString("base64");
+    } else if (image.includes("base64,")) {
+      // Already base64 with prefix
+      // 1. CONVERSION OF BASE64 INTO ArrayBuffer to save into SUPABASE BUCKET
+      // Base64 comes with a prefix like "data:image/png;base64,".
+      base64Data = image.split("base64,")[1];
+    } else {
+      // Plain base64 without prefix
+      base64Data = image;
+    }
 
     // 2. GENERATING A UNIQUE FILE PATH
     const fileName = `logo_${Date.now()}.jpg`;
@@ -32,7 +45,6 @@ export async function saveLogoToDb({ user_id, title, desc, image }: any) {
       .from("generated-logos")
       .getPublicUrl(filePath);
     const image_url = urlData.publicUrl;
-    console.log("THIS IS IMAGE URL - ", image_url);
 
     // 5. SAVING METADATA in the logos table of supabase
     const { data, error } = await supabaseAdmin

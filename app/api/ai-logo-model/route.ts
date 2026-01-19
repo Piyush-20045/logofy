@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     // Save image to Supabase Storage and record in DB (if user_id exists)
     try {
       if (user_id) {
-        const res = await saveLogoToDb({
+        saveLogoToDb({
           user_id,
           title,
           desc,
