@@ -30,7 +30,7 @@ const FeaturesCard = () => {
         <h2 className="text-3xl md:text-4xl font-bold">
           Get your logo instantly from logofy
         </h2>
-        <p className="mt-3 text-lg md:text-xl font-semibold text-gray-500">
+        <p className="mt-3 text-lg md:text-xl font-medium text-gray-500">
           Professional logo ready in 5 minutes, not days.
         </p>
       </div>

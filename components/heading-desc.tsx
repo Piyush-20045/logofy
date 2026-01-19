@@ -9,7 +9,7 @@ const HeadingDesc = ({ title, desc }: HeadingDescProps) => {
       <h1 className="text-2xl md:text-3xl font-bold text-teal-600 flex items-center gap-1">
         {title}
       </h1>
-      <p className="mt-1 text-lg font-semibold text-gray-700">{desc}</p>
+      <p className="mt-1 text-md font-semibold text-gray-700">{desc}</p>
     </div>
   );
 };

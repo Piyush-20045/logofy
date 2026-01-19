@@ -33,7 +33,7 @@ const Hero = () => {
       <h1 className="mt-5 text-4xl md:text-6xl font-bold text-teal-500">
         The Ultimate AI Logo Maker
       </h1>
-      <p className="mt-3 text-xl md:text-2xl text-gray-600 font-semibold">
+      <p className="mt-3 text-xl md:text-2xl text-gray-600 font-medium">
         Transform your brand identity in seconds. Create and edit logos with
         ease, no design skills required.
       </p>

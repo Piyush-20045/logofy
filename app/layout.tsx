@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { Nunito } from "next/font/google";
+import { Nunito, Noto_Sans } from "next/font/google";
 import "./globals.css";
 import Provider from "./Provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "react-hot-toast";
 
 const nunito = Nunito({
+  subsets: ["latin"],
+});
+const notoSans = Noto_Sans({
   subsets: ["latin"],
 });
 
@@ -22,7 +25,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={nunito.className}>
+        <body className={notoSans.className}>
           <Provider>{children}</Provider>
           <Toaster />
         </body>
