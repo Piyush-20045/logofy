@@ -53,7 +53,7 @@ export const aiImage = async (prompt: string, user_id: string) => {
       const replicate = new Replicate({
         auth: process.env.REPLICATE_API_TOKEN,
       });
-      const output = await replicate.run(
+      const output = (await replicate.run(
         "bytedance/hyper-flux-8step:16084e9731223a4367228928a6cb393b21736da2a0ca6a5a492ce311f0a97143",
         {
           input: {
@@ -69,7 +69,7 @@ export const aiImage = async (prompt: string, user_id: string) => {
             num_inference_steps: 8,
           },
         }
-      );
+      )) as Array<{ url: () => URL }>;
 
       const tempImageUrl = output[0].url().href;
 
