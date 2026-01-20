@@ -7,19 +7,22 @@ const Footer = () => {
             <img src="/logo.png" alt="logo" className="h-12 w-12" />
           </div>
 
-          <div className="flex items-center gap-6 md:gap-14 text-md text-muted-foreground">
+          <div className="flex items-center gap-6 md:gap-14 text-sm text-muted-foreground">
             <a href="#" className="hover:text-teal-600 transition-colors">
               Privacy
             </a>
             <a href="#" className="hover:text-teal-600 transition-colors">
               Terms
             </a>
-            <a href="#" className="hover:text-teal-600 transition-colors">
+            <a
+              href="/contact"
+              className="hover:text-teal-600 transition-colors"
+            >
               Contact
             </a>
           </div>
 
-          <p className="text-md text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} Logofy. All rights reserved.
           </p>
         </div>
