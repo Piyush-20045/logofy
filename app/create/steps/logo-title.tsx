@@ -46,7 +46,7 @@ const LogoTitle = ({ onHandleInputChange }: LogoTitleProps) => {
             setTitle(e.target.value);
             onHandleInputChange("title", e.target.value);
           }}
-          className="h-12 mt-8 bg-white text-lg! font-semibold text-gray-800 shadow-md shadow-black/10 placeholder:text-gray-400 focus:ring-blue-200!"
+          className="h-12 mt-8 bg-white font-semibold text-gray-800 shadow-md shadow-black/10 placeholder:text-gray-400 focus:ring-blue-200!"
         />
         <Input
           type="text"
@@ -56,7 +56,7 @@ const LogoTitle = ({ onHandleInputChange }: LogoTitleProps) => {
             setDesc(e.target.value);
             onHandleInputChange("desc", e.target.value);
           }}
-          className="h-12 mt-4 bg-white text-lg! font-semibold text-gray-800 shadow-md shadow-black/10 placeholder:text-gray-400 focus:ring-blue-200!"
+          className="h-12 mt-4 bg-white font-semibold text-gray-800 shadow-md shadow-black/10 placeholder:text-gray-400 focus:ring-blue-200!"
         />
         <Button
           onClick={() => incStep(1)}
