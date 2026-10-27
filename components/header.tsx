@@ -1,19 +1,16 @@
 "use client";
-import { Button } from "@/components/ui/button";
+
 import Image from "next/image";
-import { LogIn } from "lucide-react";
 import Link from "next/link";
+import { ArrowUpRight, Diamond } from "lucide-react";
 import { UserButton, useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { useEffect } from "react";
 import { useCreditStore } from "@/stores/credit-store";
 
-// Header Component
-const header = () => {
+export default function Header() {
   const { isLoaded, isSignedIn, user } = useUser();
   const { credits, fetchCredits } = useCreditStore();
 
-  // FETCHING CREDITS
   useEffect(() => {
     if (isLoaded && user?.id) {
       fetchCredits(user.id);
@@ -21,39 +18,79 @@ const header = () => {
   }, [user?.id, isLoaded, fetchCredits]);
 
   return (
-    <div className="px-3 md:px-20 2xl:px-56 py-2 flex justify-between items-center shadow-sm">
-      {/* LOGO */}
-      <Link href="/" className="flex items-center cursor-pointer">
-        <Image width={55} height={55} src="/logo.png" alt="logo" />
-      </Link>
-
-      {/* NAV LINKS */}
-      {!isLoaded ? null : isSignedIn ? (
-        <div className="flex items-center gap-2 md:gap-6">
-          <Link
-            href="pricing"
-            className="px-2 py-1 flex gap-2 border-2 rounded-lg hover:bg-gray-100"
-          >
-            <img src="credit.webp" className="w-5 h-5" />
-            {credits}
-          </Link>
-          <Link href="/dashboard">
-            <Button variant="outline" className="cursor-pointer">
-              Dashboard
-            </Button>
-          </Link>
-          <UserButton />
-        </div>
-      ) : (
-        <Link href={"/sign-in"}>
-          <Button className="custom-button text-lg">
-            <LogIn />
-            login
-          </Button>
+    <header className="border-b border-[#e3e6dc] bg-[#f7f7f0] text-[#202e29]">
+      <div className="mx-auto flex min-h-[84px] max-w-[1408px] items-center justify-between gap-6 px-6 max-md:min-h-[74px] max-md:flex-wrap max-md:gap-3 max-md:py-3 max-[380px]:gap-1.5 max-[380px]:px-3">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-[29px] font-bold tracking-[-0.075em] outline-offset-4 focus-visible:outline-2 focus-visible:outline-[#087f69] max-md:text-[25px] max-[380px]:gap-1"
+          aria-label="Logofy home"
+        >
+          <Image
+            width={52}
+            height={52}
+            src="/logo.png"
+            alt=""
+            className="size-13 shrink-0 object-contain max-md:size-11"
+          />
+          <span>
+            logofy<span className="text-[#087f69]">.</span>
+          </span>
         </Link>
-      )}
-    </div>
-  );
-};
 
-export default header;
+        <nav
+          className="ml-auto mr-7 hidden gap-8 text-[15px] text-[#657165] md:flex max-lg:mr-0"
+          aria-label="Main navigation"
+        >
+          <Link
+            href="/#how-it-works"
+            className="hover:text-[#087f69] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#087f69]"
+          >
+            How it works
+          </Link>
+          <Link
+            href="/pricing"
+            className="hover:text-[#087f69] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#087f69]"
+          >
+            Pricing
+          </Link>
+        </nav>
+
+        <div className="flex items-center gap-5 max-md:gap-3 max-[380px]:gap-1.5">
+          {!isLoaded ? (
+            <span className="h-[42px] w-[135px]" aria-label="Loading account" />
+          ) : isSignedIn ? (
+            <>
+              <Link
+                href="/pricing"
+                className="flex items-center gap-2 text-[15px] text-[#087f69] focus-visible:outline-2 focus-visible:outline-offset-4 max-md:gap-1 max-md:text-[13px]"
+                aria-label={
+                  credits === null
+                    ? "View credits and pricing"
+                    : `${credits} credits. View pricing`
+                }
+              >
+                <Diamond size={15} />
+                <span>{credits ?? "—"}</span>
+              </Link>
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center justify-center gap-5 rounded-md border border-[#d5dbd0] px-4.5 py-3 text-[15px] font-semibold hover:bg-[#ebeee4] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#087f69] max-md:gap-2 max-md:px-3 max-md:py-2.5 max-md:text-sm max-[380px]:px-2"
+              >
+                Dashboard{" "}
+                <ArrowUpRight size={15} className="max-[380px]:hidden" />
+              </Link>
+              <UserButton />
+            </>
+          ) : (
+            <Link
+              href="/sign-in"
+              className="inline-flex items-center justify-center gap-5 rounded-md bg-[#087f69] px-4.5 py-3 text-[15px] font-semibold text-white hover:bg-[#05614f] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#087f69] max-md:gap-2 max-md:px-3 max-md:py-2.5 max-md:text-sm"
+            >
+              Get started <ArrowUpRight size={16} />
+            </Link>
+          )}
+        </div>
+      </div>
+    </header>
+  );
+}

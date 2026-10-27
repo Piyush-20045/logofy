@@ -4,10 +4,10 @@ import Cta from "@/components/home/cta";
 
 export default function Home() {
   return (
-    <div className="md:px-16 lg:px-32 xl:px-48 2xl:px-56">
+    <main>
       <Hero />
       <FeaturesCard />
       <Cta />
-    </div>
+    </main>
   );
 }
