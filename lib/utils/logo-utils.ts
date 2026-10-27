@@ -38,7 +38,7 @@ export const downloadLogo = async (imageUrl: string, fileName: string) => {
 };
 
 // DELETE LOGO FUNCTION
-export const deleteLogo = async (logoId: Number, imageUrl: string) => {
+export const deleteLogo = async (logoId: number, imageUrl: string) => {
   try {
     // API CALL TO DELETE THE LOGO from database and storage
     await axios.post("/api/delete-logo", {
@@ -46,8 +46,10 @@ export const deleteLogo = async (logoId: Number, imageUrl: string) => {
       image_url: imageUrl,
     });
     toast.success("Logo deleted successfully");
+    return true;
   } catch (err) {
     console.error("Error in deleting", err);
-    toast.error("Failed to delete logo. Please refresh the page.");
+    toast.error("Failed to delete logo. Please try again.");
+    return false;
   }
 };
