@@ -1,64 +1,70 @@
-import HeadingDesc from "../../../components/heading-desc";
-import colors from "../../../data/colors";
-import { Label } from "@/components/ui/label";
-import { useState, useEffect } from "react";
+"use client";
+
+import { Check } from "lucide-react";
+import colors from "@/data/colors";
 import { useStore } from "@/stores/steps-store";
 
-// Define props interface
-interface LogoTitleProps {
+interface LogoPaletteProps {
   onHandleInputChange: (value: string) => void;
 }
 
-const LogoPalette = ({ onHandleInputChange }: LogoTitleProps) => {
-  const storedPalette = useStore((s) => s.formData.palette);
-  const [selectedPalette, setSelectedPalette] = useState(storedPalette ?? "");
+export default function LogoPalette({ onHandleInputChange }: LogoPaletteProps) {
+  const selectedPalette = useStore((state) => state.formData.palette);
 
-  useEffect(() => {
-    if (storedPalette) setSelectedPalette(storedPalette);
-  }, [storedPalette]);
   return (
-    <div>
-      {/* Heading */}
-      <HeadingDesc
-        title="Pick a color tone"
-        desc="Pick the color tone that can most represent your company."
-      />
-
-      {/* All Color Swatches */}
-      <div className="mt-8 grid grid-cols-2 md:grid-cols-3 place-items-center gap-4">
+    <section aria-labelledby="palette-title">
+      <p className="mb-3 text-xs font-semibold tracking-[0.13em] text-[#087f69]">
+        02 / SET THE MOOD
+      </p>
+      <h2 id="palette-title" className="text-3xl font-semibold tracking-tight">
+        Find your colors.
+      </h2>
+      <p className="mt-3 text-[15px] leading-relaxed text-[#63705f]">
+        Choose a palette that feels like you. Or let AI find the right mix.
+      </p>
+      <fieldset className="mt-7 grid grid-cols-2 gap-4 lg:grid-cols-3">
+        <legend className="sr-only">Choose a color palette</legend>
         {colors.map((palette) => (
-          // Label & Single Palette
-          <div
-            key={palette.name}
-            className="group h-36 w-full flex flex-col border rounded"
-          >
-            <div
-              className={`flex cursor-pointer hover:scale-95 duration-300 transition-all active:scale-95 rounded ${
-                selectedPalette === palette.name &&
-                "p-0.5 border-2 border-gray-400 rounded"
-              }`}
-            >
-              {palette.colors.map((color) => (
-                // Single Color Box
-                <div
-                  key={color}
-                  style={{ backgroundColor: color }}
-                  className="flex h-24 w-full"
-                  onClick={() => {
-                    setSelectedPalette(palette.name);
-                    onHandleInputChange(palette.name);
-                  }}
-                ></div>
-              ))}
+          <label key={palette.name} className="relative min-w-0 cursor-pointer">
+            <input
+              type="radio"
+              name="palette"
+              value={palette.name}
+              checked={selectedPalette === palette.name}
+              onChange={() => onHandleInputChange(palette.name)}
+              className="peer sr-only"
+            />
+            <div className="overflow-hidden rounded-lg border border-[#dce2d4] bg-white p-2 transition-colors hover:border-[#97b49c] peer-checked:border-[#087f69] peer-checked:ring-1 peer-checked:ring-[#087f69] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-[#087f69] motion-reduce:transition-none">
+              <svg
+                viewBox="0 0 100 64"
+                preserveAspectRatio="none"
+                className="h-24 w-full rounded sm:h-28"
+                aria-hidden="true"
+              >
+                {palette.colors.map((color, index) => (
+                  <rect
+                    key={color}
+                    x={index * 20}
+                    width="20"
+                    height="64"
+                    fill={color}
+                  />
+                ))}
+              </svg>
+              <div className="flex min-h-14 items-center justify-between gap-2 px-1 py-3">
+                <span className="text-sm font-medium">{palette.name}</span>
+                <span
+                  className={`flex size-5 shrink-0 items-center justify-center rounded-full ${selectedPalette === palette.name ? "bg-[#087f69] text-white" : "border border-[#ccd5c4]"}`}
+                >
+                  {selectedPalette === palette.name && (
+                    <Check size={13} aria-hidden="true" />
+                  )}
+                </span>
+              </div>
             </div>
-            <Label className="p-1.5 w-fit border border-gray-300 rounded bg-blue-200 text-gray-800 group-hover:bg-blue-300 duration-300 transition-all">
-              {palette.name}
-            </Label>
-          </div>
+          </label>
         ))}
-      </div>
-    </div>
+      </fieldset>
+    </section>
   );
-};
-
-export default LogoPalette;
+}

@@ -1,136 +1,150 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Card, CardTitle } from "@/components/ui/card";
-import { BadgeCheck, Check } from "lucide-react";
+
+import { ArrowUpRight, Check, LoaderCircle, Sparkles } from "lucide-react";
 import { plans } from "@/data/pricing";
 import { useEffect, useState } from "react";
-import { CreateFormData } from "@/stores/steps-store";
+import { type CreateFormData } from "@/stores/steps-store";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 
-const Pricing = ({ formData }: { formData: CreateFormData }) => {
+export default function Pricing({ formData }: { formData: CreateFormData }) {
   const router = useRouter();
-  const { isSignedIn, user } = useUser();
-  const [selectedPlan, setSelectedPlan] = useState("Premium");
+  const { isLoaded, isSignedIn, user } = useUser();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (formData.title && typeof window !== "undefined") {
+    if (formData.title) {
       localStorage.setItem("FormData", JSON.stringify(formData));
     }
   }, [formData]);
 
   useEffect(() => {
+    if (!isLoaded) return;
+    let cancelled = false;
+
     const fetchPlan = async () => {
       try {
-        const { data } = await supabase
+        if (!user) return;
+        const { data, error } = await supabase
           .from("users")
           .select("plan_type")
-          .eq("id", user?.id)
+          .eq("id", user.id)
           .single();
 
-        if (data?.plan_type === "premium") {
+        if (error) throw error;
+        if (!cancelled && data?.plan_type === "premium") {
           router.push("/generate-logo");
         }
       } catch (error) {
-        console.log("Error in fetching user's plan type", error);
+        console.error("Error fetching user's plan type", error);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
-    fetchPlan();
-  }, [user?.id]);
 
-  // LOADING STATE
-  if (loading)
+    fetchPlan();
+    return () => {
+      cancelled = true;
+    };
+  }, [isLoaded, user, router]);
+
+  if (!isLoaded || loading) {
     return (
-      <div className="my-24 text-center">
-        <div className="mb-2 animate-spin rounded-full h-16 w-16 border-t-4 border-teal-600 border-solid mx-auto"></div>
-        <p>Wait, it's loading now...</p>
+      <div
+        role="status"
+        className="flex min-h-72 flex-col items-center justify-center gap-4 text-center"
+      >
+        <LoaderCircle
+          size={32}
+          className="animate-spin text-[#087f69] motion-reduce:animate-none"
+          aria-hidden="true"
+        />
+        <h2 className="text-2xl font-semibold tracking-tight">
+          One last little detail.
+        </h2>
+        <p className="text-[15px] text-[#63705f]">
+          Checking your plan before we bring your idea to life.
+        </p>
       </div>
     );
+  }
 
   return (
-    <div className="md:px-8">
-      {/* Heading */}
-      <h2 className="text-3xl md:text-4xl font-bold text-gray-800 text-center flex justify-center items-center gap-1">
-        Choose a plan
-      </h2>
-      <p className="mt-1 mb-8 text-xl font-medium text-gray-700 text-center">
-        Select a plan to generate your logo
+    <section aria-labelledby="plan-title">
+      <p className="mb-3 text-xs font-semibold tracking-[0.13em] text-[#087f69]">
+        04 / READY FOR YOUR DEBUT
       </p>
-      {/* Pricing Cards */}
-      <div className="flex flex-col md:flex-row justify-center gap-8">
-        {plans.map((plan) => (
-          <Card
-            key={plan.name}
-            className={`p-6 w-full min-w-80 lg:min-w-sm border border-gray-400 bg-gray-50 rounded-xl shadow-lg transition-all duration-200 ${
-              selectedPlan === plan.name
-                ? "scale-99 border-3 border-teal-500"
-                : ""
-            }`}
-          >
-            {/* Plan Name */}
-            <div className="flex justify-between">
-              <CardTitle className="text-2xl font-semibold text-gray-900">
-                {plan.name}
-              </CardTitle>
-              {plan.recommended && (
-                <span className="px-3 text-xs font-semibold text-white bg-linear-to-r from-blue-400 via-blue-600 to-blue-500 border border-gray-600 rounded-full flex items-center shadow-md">
-                  Recommended
-                </span>
-              )}
-            </div>
-            {/* Price and Check sign */}
-            <div className="flex items-center justify-between">
-              <p className="text-4xl font-semibold text-gray-800">
-                {plan.price.split(" ")[0]}
-                <span className="text-2xl">{plan.price.split(" ")[1]}</span>
-              </p>
-              <span>
-                {selectedPlan === plan.name ? (
-                  <Check className="p-1 rounded-full bg-gray-800 text-white" />
-                ) : null}
-              </span>
-            </div>
-            {/* Features */}
-            <ul className="mt-3 md:min-h-48">
-              <p className="text-lg font-semibold text-gray-900">
-                What's included -
-              </p>
-              {plan.features.map((feature, index) => (
-                <li key={index} className="mt-2 flex gap-1.5">
-                  <BadgeCheck className="text-gray-500" />
-                  <span className="text-sm md:text-base font-medium text-gray-800">
-                    {feature}
-                  </span>
-                </li>
-              ))}
-            </ul>
-            {/* Select Button */}
-            <Link
-              href={
-                !isSignedIn
-                  ? "/sign-up"
-                  : selectedPlan === plan.name
-                  ? "/pricing"
-                  : "/generate-logo"
-              }
-            >
-              <Button
-                onClick={() => setSelectedPlan(plan.name)}
-                className="w-full text-md rounded-full custom-button"
-              >
-                Generate Logo
-              </Button>
-            </Link>
-          </Card>
-        ))}
-      </div>
-    </div>
-  );
-};
+      <h2 id="plan-title" className="text-3xl font-semibold tracking-tight">
+        Let’s make your mark.
+      </h2>
+      <p className="mt-3 text-[15px] leading-relaxed text-[#63705f]">
+        Your creative brief is ready. Choose how you’d like to bring it to life.
+      </p>
 
-export default Pricing;
+      <div className="mt-7 grid gap-4 sm:grid-cols-2">
+        {plans.map((plan) => {
+          const premium = plan.name === "Premium";
+          const destination = !isSignedIn
+            ? "/sign-up"
+            : premium
+              ? "/pricing"
+              : "/generate-logo";
+
+          return (
+            <article
+              key={plan.name}
+              className={`flex flex-col rounded-xl border p-5 ${premium ? "border-[#163f36] bg-[#163f36] text-[#f5f5e9]" : "border-[#dce2d4] bg-white"}`}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="text-xl font-semibold">{plan.name}</h3>
+                {plan.recommended && (
+                  <Sparkles
+                    size={20}
+                    className="text-[#dceab7]"
+                    aria-label="Recommended"
+                  />
+                )}
+              </div>
+              <p className="mt-5 text-4xl font-semibold tracking-tight">
+                {premium ? `₹${plan.price.split("₹")[0]}` : plan.price}
+              </p>
+              <p
+                className={`mt-1 text-sm ${premium ? "text-[#bdcfc0]" : "text-[#63705f]"}`}
+              >
+                {premium
+                  ? plan.price.split("/")[1].toLowerCase()
+                  : "A first spark of inspiration"}
+              </p>
+              <ul
+                className={`my-6 flex flex-1 flex-col gap-3 border-t pt-5 ${premium ? "border-[#416156]" : "border-[#e0e5d7]"}`}
+              >
+                {plan.features.map((feature) => (
+                  <li
+                    key={feature}
+                    className="flex items-start gap-2 text-sm leading-relaxed"
+                  >
+                    <Check
+                      size={16}
+                      className={`mt-0.5 shrink-0 ${premium ? "text-[#dceab7]" : "text-[#087f69]"}`}
+                      aria-hidden="true"
+                    />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href={destination}
+                className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-md px-3 py-3 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 ${premium ? "bg-[#dfecb7] text-[#203b2d] hover:bg-[#eef5d7] focus-visible:outline-[#dfecb7]" : "bg-[#087f69] text-white hover:bg-[#05614f] focus-visible:outline-[#087f69]"}`}
+              >
+                {premium ? "Get premium credits" : "Generate my logo"}
+                <ArrowUpRight size={17} />
+              </Link>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
