@@ -19,7 +19,7 @@ export default function Header() {
 
   return (
     <header className="border-b border-[#e3e6dc] bg-[#f7f7f0] text-[#202e29]">
-      <div className="mx-auto flex min-h-[84px] max-w-[1408px] items-center justify-between gap-6 px-6 max-md:min-h-[74px] max-md:flex-wrap max-md:gap-3 max-md:py-3 max-[380px]:gap-1.5 max-[380px]:px-3">
+      <div className="mx-auto flex min-h-21 max-w-352 items-center justify-between gap-6 px-6 max-md:min-h-18.5 max-md:flex-wrap max-md:gap-3 max-md:py-3 max-[380px]:gap-1.5 max-[380px]:px-3">
         <Link
           href="/"
           className="inline-flex items-center gap-2 text-[29px] font-bold tracking-[-0.075em] outline-offset-4 focus-visible:outline-2 focus-visible:outline-[#087f69] max-md:text-[25px] max-[380px]:gap-1"
@@ -57,7 +57,7 @@ export default function Header() {
 
         <div className="flex items-center gap-5 max-md:gap-3 max-[380px]:gap-1.5">
           {!isLoaded ? (
-            <span className="h-[42px] w-[135px]" aria-label="Loading account" />
+            <span className="h-10.5 w-33.75" aria-label="Loading account" />
           ) : isSignedIn ? (
             <>
               <Link
